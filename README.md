@@ -41,7 +41,8 @@ token by token.
   tokens, **62 minutes on one H100**.
 - **On the Mac:** no multiplications by weights. Ternary matrix rows become table lookups over
   groups of 4 inputs, in generated 68000 assembly, with 16-bit integer arithmetic throughout.
-  **About 5 seconds per word piece** on a real Mac Plus with 4 MB. The model is 1.42 MB, on two
+  **About 0.2 tokens per second** on a real Mac Plus with 4 MB (0.3 in the emulator, which runs
+  a Plus 1.5× too fast). The model is 1.42 MB, on two
   800K floppies.
 - **Bit-exact:** the Mac produces exactly the tokens a Python reference predicts for the same seed.
 
