@@ -1,0 +1,104 @@
+{
+ "name": "H=256 int4 step 100000",
+ "H": 256,
+ "quant": "int4",
+ "step": 100000,
+ "nparam": 277659,
+ "val_full": {
+  "loss": 0.8279838653254121,
+  "off": 0.5289326115796082,
+  "pen": 0.2990512537458039
+ },
+ "sim_subset_n": 6900,
+ "sim_cudnn": {
+  "loss": 0.8423239384298031,
+  "off": 0.542646490634074,
+  "pen": 0.2996774477957291
+ },
+ "sim_step_float": {
+  "loss": 0.8424089499549914,
+  "off": 0.5427315047602107,
+  "pen": 0.2996774451947806
+ },
+ "sim_step_h_int8": {
+  "loss": 0.8644757499039439,
+  "off": 0.5609670594916789,
+  "pen": 0.303508690412265
+ },
+ "A_auto": 32,
+ "max_row_L1": 996,
+ "mac_auto": {
+  "loss": 0.862199105303999,
+  "off": 0.5605262407278703,
+  "pen": 0.3016728645761287,
+  "A": 32,
+  "wrap": true,
+  "rec_overflow_rate": 0.0,
+  "out_overflow_rate": 0.0,
+  "max_abs_S_rec": 4002.0,
+  "max_abs_S_out": 5353.0
+ },
+ "mac_sim": [
+  {
+   "loss": 0.8429109055084644,
+   "off": 0.5431605007232942,
+   "pen": 0.2997504047851701,
+   "A": 127,
+   "wrap": true,
+   "rec_overflow_rate": 0.0,
+   "out_overflow_rate": 0.0,
+   "max_abs_S_rec": 15907.0,
+   "max_abs_S_out": 21117.0
+  },
+  {
+   "loss": 0.8429109055084644,
+   "off": 0.5431605007232942,
+   "pen": 0.2997504047851701,
+   "A": 127,
+   "wrap": false,
+   "rec_overflow_rate": 0.0,
+   "out_overflow_rate": 0.0,
+   "max_abs_S_rec": 15907.0,
+   "max_abs_S_out": 21117.0
+  },
+  {
+   "loss": 0.8466117555632389,
+   "off": 0.5464451585932117,
+   "pen": 0.300166596970027,
+   "A": 63,
+   "wrap": true,
+   "rec_overflow_rate": 0.0,
+   "out_overflow_rate": 0.0,
+   "max_abs_S_rec": 7884.0,
+   "max_abs_S_out": 10499.0
+  },
+  {
+   "loss": 0.8638031172631646,
+   "off": 0.561836384237818,
+   "pen": 0.3019667330253466,
+   "A": 31,
+   "wrap": true,
+   "rec_overflow_rate": 0.0,
+   "out_overflow_rate": 0.0,
+   "max_abs_S_rec": 3879.0,
+   "max_abs_S_out": 5172.0
+  }
+ ],
+ "test_full": {
+  "loss": 0.8289177153672449,
+  "off": 0.5296058852027589,
+  "pen": 0.29931183016448604
+ },
+ "grid_mean_moves": 60.65,
+ "grid_hit_max": 0,
+ "grid_mean_moves_t0.3": 83.79166666666667,
+ "grid_hit_max_t0.3": 9,
+ "grid_mean_moves_pen1": 45.18333333333333,
+ "grid_hit_max_pen1": 0,
+ "grid_mean_moves_t0.3_pen1": 48.166666666666664,
+ "grid_hit_max_t0.3_pen1": 0,
+ "completions_leaving_frame": "52/80",
+ "completion_mean_moves": 40.85,
+ "completions_leaving_frame_pen1": "39/80",
+ "completion_mean_moves_pen1": 26.4375
+}

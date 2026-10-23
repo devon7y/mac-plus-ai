@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Macintosh Plus</title>
+<meta name="description" content="Devon's Macintosh Plus, emulated in your browser on a 3D Macintosh: original games and apps on a System 6 desktop.">
+<meta name="theme-color" content="#0b0b0c">
+<meta property="og:title" content="Macintosh Plus">
+<meta property="og:description" content="Devon's Macintosh Plus, emulated in your browser on a 3D Macintosh: original games and apps on a System 6 desktop.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="__STYLE__">
+<script type="importmap">__IMPORTMAP__</script>
+<script type="application/json" id="mac-config">__MAC_CONFIG__</script>
+</head>
+<body>
+
+<!-- The 3D Mac fills the window; the flat view (fallback) does too. -->
+<div class="view3d" id="view3d" hidden>
+  <p class="loading3d" id="view3d-loading">Loading the 3D Mac…</p>
+</div>
+<div class="flat" id="flat" hidden>
+  <p class="flatnote" id="flatnote">This browser can't show the 3D Mac (no WebGL), so here is its screen on its own.</p>
+  <div class="case" id="flat-case">
+    <div class="screen-wrap" id="screen-wrap">
+      <canvas id="screen" width="512" height="342" aria-label="Mac screen"></canvas>
+      <div class="crt-scan" aria-hidden="true"></div>
+    </div>
+    <div class="case-foot" aria-hidden="true"><span class="case-label">Mac Plus · 4 MB · System 6</span><span class="slot"></span></div>
+  </div>
+</div>
+
+<!-- Floating buttons along the top, each its own small pill (no bar): the Mac's controls on the
+     left, the view's on the right. On phones they fold into one menu button. -->
+<header class="topbar" id="topbar">
+  <button class="fbtn menu-btn" id="btn-menu" type="button" aria-expanded="false" aria-controls="topitems" aria-label="Controls" title="Controls"></button>
+  <div class="topitems" id="topitems">
+    <div class="fgroup mac" role="toolbar" aria-label="The Mac">
+      <button class="fbtn" id="btn-full" type="button"></button>
+      <button class="fbtn" id="btn-start" type="button"></button>
+      <label class="fbtn fselect" title="Speed"><span class="ico" id="speed-ico"></span><span class="sr">Speed</span>
+        <select id="speed">
+          <option value="2">Fast (4×)</option>
+          <option value="0">Real Plus (1×)</option>
+        </select>
+      </label>
+      <button class="fbtn" id="btn-disk" type="button" data-panel="disk"></button>
+    </div>
+    <div class="fgroup view" role="toolbar" aria-label="View">
+      <button class="fbtn" id="btn-reset" type="button"></button>
+      <button class="fbtn" id="btn-lock" type="button" aria-pressed="false"></button>
+      <button class="fbtn" type="button" data-panel="help">Help</button>
+    </div>
+  </div>
+</header>
+
+<div class="scrim" id="scrim" hidden></div>
+
+<section class="panel" id="panel-help" role="dialog" aria-modal="true" aria-labelledby="ph" hidden>
+  <header class="panel-head"><h2 id="ph">Help</h2><button class="close" type="button" aria-label="Close">×</button></header>
+  <div class="panel-body">
+    <section class="help-app" id="help-app" hidden></section>
+    <details class="fold" id="help-tips" open>
+      <summary>Using this page</summary>
+      <ul class="tips">
+        <li><kbd>Ctrl</kbd> is the Mac's <kbd>⌘</kbd> key: <kbd>Ctrl</kbd> <kbd>Q</kbd> quits a program.</li>
+        <li>Games quit with <kbd>Esc</kbd> (or <kbd>`</kbd> when full screen or the locked mouse takes <kbd>Esc</kbd>).</li>
+        <li>Blockworld: click the screen to capture the mouse for looking around. <kbd>Esc</kbd> gives the mouse back and opens the game's menu; <kbd>Esc</kbd> again returns to the game, then click to capture again. <kbd>`</kbd> opens the menu without letting go of the mouse.</li>
+        <li><b>Fast</b> runs the Mac about four times faster than a real Plus; Glider, and typing in Pixel, Dream and Doodle, run at real speed.</li>
+        <li>Sound comes on with your first click or key press; the sliders below set the hardware and software volumes, and the browser tab's mute silences both.</li>
+        <li>Drag around the Mac to look; scroll or pinch to zoom. You can type on the 3D keyboard and click the 3D mouse.</li>
+        <li>Nothing is kept: reloading the page starts the Mac afresh.</li>
+      </ul>
+    </details>
+    <details class="fold" id="help-others">
+      <summary>Keys for the other programs</summary>
+      <div class="allkeys" id="help-others-list"></div>
+    </details>
+    <p class="credits-line">Devon's Macintosh Plus (4 MB, System&nbsp;6), emulated with Mini vMac on a 3D model of the 1984 Macintosh. Credits and licences: open <b>Credits &amp; Licenses</b> on the Mac's desktop.</p>
+    <h3>Settings</h3>
+    <div class="settings">
+      <label class="quality"><input type="checkbox" id="click-sounds"> Keyboard and mouse sounds</label>
+      <label class="quality vol"><svg class="vol-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.4 6h2.4l3.4-2.8v9.6L4.8 10H2.4z" fill="currentColor"/><path d="M10.8 5.6a3.4 3.4 0 0 1 0 4.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Mac hardware sounds
+        <input type="range" id="vol-hw" min="0" max="100" step="1"><span id="vol-hw-val" class="rangeval"></span></label>
+      <label class="quality vol"><svg class="vol-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.4 6h2.4l3.4-2.8v9.6L4.8 10H2.4z" fill="currentColor"/><path d="M10.8 5.6a3.4 3.4 0 0 1 0 4.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>Mac software sounds
+        <input type="range" id="vol-sw" min="0" max="100" step="1"><span id="vol-sw-val" class="rangeval"></span></label>
+      <label class="quality">Blockworld mouse speed
+        <input type="range" id="look-sens" min="0.1" max="1.2" step="0.05" aria-describedby="look-sens-val">
+        <span id="look-sens-val" class="rangeval"></span>
+      </label>
+      <label class="quality">Graphics quality
+      <select id="quality">
+        <option value="auto">Automatic</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </label>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="panel-disk" role="dialog" aria-modal="true" aria-labelledby="pd" hidden>
+  <header class="panel-head"><h2 id="pd">Insert Disk</h2><button class="close" type="button" aria-label="Close">×</button></header>
+  <div class="panel-body">
+    <p class="disk-intro">Drop a disk image, or a .sit / .sea / .hqx / .bin / .zip download: the page unpacks it and puts it on a disk, which appears on the Mac's desktop. Double-click the app on it. Your files stay in your browser: nothing is uploaded. To eject, drag the disk to the Trash (or File &gt; Eject).</p>
+    <p class="disk-error" id="disk-error" role="alert" hidden></p>
+    <div class="disk-actions">
+      <button class="fbtn primary" id="disk-choose" type="button">Choose disk image…</button>
+      <span class="disk-hint">or drop it anywhere on the page. Tip: click the floppy slot on the Mac to open the file picker directly.</span>
+    </div>
+    <input type="file" id="disk-file" accept=".dsk,.img,.image,.hfv,.dc42,.diskcopy,.zip,.sit,.sea,.hqx,.bin,application/zip,application/octet-stream" hidden>
+    <div id="disk-inserted" hidden>
+      <h3 id="disk-inserted-title">On the Mac now</h3>
+      <ul class="disk-list" id="disk-list"></ul>
+      <p class="disk-hint">Download a disk to keep what the app saved on it; insert it again next time. A restart ejects the disks; Re-insert puts one back.</p>
+    </div>
+    <h3>Make your own app with an AI</h3>
+    <p>Paste this into your AI assistant, then insert the .dsk file it builds:</p>
+    <div class="prompt-box">
+      <pre id="ai-prompt">Write a classic Macintosh application in C for a Macintosh Plus running System 6: a 68000 CPU (no 68020 or FPU instructions), 4 MB of RAM and a 512×342 black-and-white screen. Use only the original Toolbox (QuickDraw, Window, Menu, Event and Dialog Managers): no Color QuickDraw and no System 7 calls. Build it with Retro68 (https://github.com/autc04/Retro68); its build writes a floppy disk image, &lt;App&gt;.dsk. Put any files the app needs on that same disk. Give it a File menu with Quit (Command-Q), and if it is a game played with the keyboard, also quit (or go back to its title) on Esc and on ` (backquote). Give me the .dsk file.</pre>
+      <button class="fbtn small" id="prompt-copy" type="button">Copy</button>
+    </div>
+    <h3>Classic games and apps</h3>
+    <ul class="tips">
+      <li><a href="https://macintoshgarden.org" target="_blank" rel="noopener">Macintosh Garden</a> and <a href="https://www.macintoshrepository.org" target="_blank" rel="noopener">Macintosh Repository</a> have thousands; Glider and the Talking Moose on this Mac came from there.</li>
+      <li>Pick black-and-white titles that run on System 6 and a Mac Plus.</li>
+      <li>Disk images and StuffIt, BinHex, MacBinary and .zip downloads all work; StuffIt X (.sitx) and Compact Pro (.cpt) need unpacking first, for example with The Unarchiver.</li>
+      <li>Respect each title's licence.</li>
+    </ul>
+  </div>
+</section>
+
+
+
+<p class="toast" id="toast" role="status" hidden></p>
+<p class="error" id="error" hidden></p>
+<script type="module" src="__APP__"></script>
+</body>
+</html>

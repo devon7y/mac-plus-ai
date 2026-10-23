@@ -1,0 +1,70 @@
+{
+ "_comment": "Proposed emu/games.json entries for Dream (the manager registers them). Paths relative to the repo root.",
+ "dream": {
+  "title": "Dream (tiny diffusion model, 4 MB)",
+  "disk": "dream/build/release/dream.img",
+  "ram": "4M",
+  "status": "ready",
+  "controls": "Type a subject (e.g. house) and press Return, or click Dream; Return with an empty box or Surprise me picks one of 220. The picture develops from static in 6 steps (about 95 s on a real Plus); click to stop after the current step. File menu: Copy Picture, Save as MacPaint. Loads its model for about 55 s first.",
+  "smoke": {
+   "times": [
+    150,
+    200,
+    240
+   ],
+   "actions": [
+    [
+     140,
+     "key",
+     "Return"
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "dream_1mb": {
+  "title": "Dream (1 MB Plus, 32x32)",
+  "disk": "dream/build/release/dream_1mb.img",
+  "ram": "1M",
+  "status": "ready",
+  "controls": "Same as Dream, at 32x32 with 191 subjects (about 48 s per picture on a real Plus).",
+  "smoke": {
+   "times": [
+    70,
+    85,
+    120
+   ],
+   "actions": [
+    [
+     60,
+     "key",
+     "Return"
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "dream_se": {
+  "title": "Dream (Macintosh SE, 1.44 MB floppy)",
+  "disk": "dream/build/release/dream_se.img",
+  "machine": "macsefd",
+  "ram": "4M",
+  "status": "ready (same app and model; System 6.0.7 SE boot floppy)",
+  "controls": "As Dream (about 85 s per picture on a real SE).",
+  "smoke": {
+   "times": [
+    150,
+    200,
+    240
+   ],
+   "actions": [
+    [
+     140,
+     "key",
+     "Return"
+    ]
+   ],
+   "animates": true
+  }
+ }
+}

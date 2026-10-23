@@ -1,0 +1,22 @@
+# StuffIt (.sit, SIT! 1.x to StuffIt 5 with Arsenic) decoding for the page's Insert Disk, compiled to
+# WebAssembly. Built by tools/build_sit_wasm.sh into build/sit_wasm/sit.wasm.
+# Decoder: the `stuffit` crate by Ben Letchford, MIT OR Apache-2.0.
+[package]
+name = "sit_wasm"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+crate-type = ["cdylib"]
+path = "src/lib.rs"
+
+[dependencies]
+stuffit = { version = "=0.4.0", default-features = false }
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

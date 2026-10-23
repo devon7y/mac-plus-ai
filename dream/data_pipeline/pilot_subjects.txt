@@ -1,0 +1,20 @@
+cat
+house
+sailboat
+castle
+apple
+tree
+car
+bicycle
+fish
+bird
+airplane
+umbrella
+guitar
+flower
+elephant
+teapot
+alarm clock
+butterfly
+mushroom
+lighthouse

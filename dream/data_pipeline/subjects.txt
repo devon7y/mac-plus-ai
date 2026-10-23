@@ -1,0 +1,261 @@
+airplane
+alarm clock
+ambulance
+angel
+ant
+anvil
+apple
+asparagus
+axe
+backpack
+banana
+bandage
+barn
+baseball
+baseball bat
+basket
+basketball
+bat
+bathtub
+bear
+bed
+bee
+bench
+bicycle
+binoculars
+bird
+birthday cake
+book
+boomerang
+bowtie
+brain
+bread
+bridge
+broccoli
+broom
+bucket
+bulldozer
+bus
+butterfly
+cactus
+camel
+camera
+campfire
+candle
+cannon
+canoe
+car
+carrot
+castle
+cat
+ceiling fan
+cello
+cell phone
+chair
+chandelier
+church
+clarinet
+clock
+cloud
+coffee cup
+computer
+cookie
+couch
+cow
+crab
+crayon
+crocodile
+crown
+cruise ship
+diamond
+dog
+dolphin
+donut
+door
+dragon
+dresser
+drill
+drums
+duck
+dumbbell
+elephant
+envelope
+eye
+eyeglasses
+fan
+feather
+fence
+fire hydrant
+fireplace
+firetruck
+fish
+flamingo
+flashlight
+flip flops
+floor lamp
+flower
+flying saucer
+foot
+fork
+frog
+frying pan
+giraffe
+grapes
+guitar
+hamburger
+hammer
+hand
+harp
+hat
+headphones
+hedgehog
+helicopter
+helmet
+horse
+hot air balloon
+hot dog
+hourglass
+house
+house plant
+ice cream
+jacket
+kangaroo
+key
+knife
+ladder
+lantern
+laptop
+leaf
+light bulb
+lighthouse
+lightning
+lion
+lipstick
+lobster
+lollipop
+mailbox
+matches
+megaphone
+mermaid
+microphone
+microwave
+monkey
+moon
+mosquito
+motorbike
+mountain
+mouse
+moustache
+mug
+mushroom
+necklace
+octopus
+onion
+owl
+paintbrush
+paint can
+palm tree
+panda
+pants
+paper clip
+parachute
+parrot
+peanut
+pear
+peas
+pencil
+penguin
+piano
+pickup truck
+pig
+pineapple
+pizza
+pliers
+police car
+popsicle
+purse
+rabbit
+raccoon
+radio
+rainbow
+rake
+rhinoceros
+rollerskates
+sailboat
+sandwich
+saw
+saxophone
+scissors
+scorpion
+screwdriver
+sea turtle
+see saw
+shark
+sheep
+shoe
+shorts
+shovel
+sink
+skateboard
+skull
+skyscraper
+smiley face
+snail
+snake
+snowflake
+snowman
+soccer ball
+sock
+speedboat
+spider
+spoon
+squirrel
+stairs
+star
+steak
+stethoscope
+stove
+strawberry
+streetlight
+submarine
+suitcase
+sun
+swan
+sweater
+swing set
+sword
+syringe
+table
+teapot
+teddy-bear
+telephone
+television
+tennis racquet
+tent
+The Eiffel Tower
+tiger
+toaster
+toilet
+tooth
+toothbrush
+tractor
+traffic light
+train
+tree
+trombone
+truck
+trumpet
+t-shirt
+umbrella
+van
+vase
+violin
+washing machine
+watermelon
+whale
+wheel
+windmill
+wine bottle
+wine glass
+wristwatch
+zebra

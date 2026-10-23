@@ -1,0 +1,33 @@
+{
+ "seq_lens": [
+  100,
+  27,
+  28,
+  7,
+  38
+ ],
+ "full_vs_step_maxabs": 1.9411557613154535,
+ "torch_vs_refFloat_maxabs": 1.4966006438536965,
+ "torch_vs_refFloat_corr_top1": [
+  0.9995965801419767,
+  0.9926377773587374,
+  0.995
+ ],
+ "int_vs_torchQAT_corr_mean_min_top1": [
+  0.9993173425729402,
+  0.9900584257037817,
+  0.9629629629629629
+ ],
+ "int_vs_refQATdequant_corr_mean_min_top1": [
+  0.9990700548568806,
+  0.9906317654331672,
+  0.9506172839506173
+ ],
+ "torchQAT_vs_refQATdequant_corr_mean_min_top1": [
+  0.9993555135983734,
+  0.990503119444376,
+  0.9876543209876543
+ ],
+ "model_file": "llm/train/checkpoints/pixel_v2.pxm",
+ "model_bytes": 1417130
+}

@@ -1,0 +1,13 @@
+{
+ "about": "Sources of the 3D keyboard's and mouse's click sounds, made into clips by tools/make_clicks.mjs (build.sh). The recordings live in vendor/sounds/ (not in git). Interim: CC0 recordings from Freesound until Devon records his own Mac Plus keyboard and mouse; then point these entries at his files.",
+ "sources": [
+  {"id": "m0118", "role": "keys", "file": "vendor/sounds/freesound_20261020/680714_3242494-hq.mp3",
+   "title": "Typing on Apple Standard Keyboard (ALPS SKCM Orange)", "author": "robni7",
+   "url": "https://freesound.org/people/robni7/sounds/680714/", "licence": "CC0 1.0",
+   "what": "an Apple M0118 keyboard (1987), Alps SKCM Orange switches", "count": 10},
+  {"id": "m0100", "role": "mouse", "file": "vendor/sounds/freesound_20261020/611812_7554526-hq.mp3", "start": 0, "end": 8.5,
+   "title": "Mouses (M0100, G5431, M2706)", "author": "SieuAmThanh (David Puerto)",
+   "url": "https://freesound.org/people/SieuAmThanh/sounds/611812/", "licence": "CC0 1.0",
+   "what": "the Macintosh M0100 mouse (the first of the three in the recording)", "count": 6, "gapBefore": 200, "minPeak": 0.15}
+ ]
+}

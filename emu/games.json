@@ -1,0 +1,270 @@
+{
+ "_comment": "Registry for emu/play.sh. The manager fills in each game's verified disk image. Paths are relative to the repo root.",
+ "narrowscreen": {
+  "title": "Narrow Screen test disk (System 6.0 + Narrow Screen)",
+  "disk": "emu/work/narrow_test.dc42",
+  "ram": "1M",
+  "status": "ready",
+  "controls": "Mouse. Apple menu > Control Panel > Narrow Screen to adjust margins."
+ },
+ "racer": {
+  "title": "Endurance",
+  "disk": "racer/build/endurance.img",
+  "ram": "1M",
+  "status": "ready",
+  "controls": "Mouse steers, button accelerates (or A/D steer, W/Space gas, S brake; arrows/X/Z also work). Return starts, P pauses, M sound on/off, Esc back to title / quit.",
+  "smoke": {
+   "times": [
+    20,
+    45,
+    58,
+    64
+   ],
+   "actions": [
+    [
+     46,
+     "key",
+     "Return"
+    ],
+    [
+     48,
+     "hold",
+     "W",
+     12
+    ],
+    [
+     52,
+     "hold",
+     "D",
+     2
+    ],
+    [
+     55,
+     "hold",
+     "A",
+     2
+    ],
+    [
+     61,
+     "hold",
+     "S",
+     1.5
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "runner": {
+  "title": "Rail Runner",
+  "disk": "runner/build/game/game.img",
+  "ram": "1M",
+  "status": "ready",
+  "controls": "A/D: change lanes, W: jump, S: roll, Space: hoverboard (arrow keys work too). Return: start. M: sound on/off. Esc: back to the title, or quit from the title.",
+  "smoke": {
+   "times": [
+    20,
+    31,
+    32,
+    33
+   ],
+   "actions": [
+    [
+     30,
+     "key",
+     "Return"
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "doodle": {
+  "title": "Doodle (paint + Finish it)",
+  "disk": "paint/build/Doodle.img",
+  "ram": "1M",
+  "status": "ready",
+  "controls": "Mouse. Draw inside the dotted frame, click Finish it (Cmd-F), type what it is (e.g. cat), press Return; click to stop, Undo removes it. Finish menu: Tidy / Normal / Wild."
+ },
+ "pixel": {
+  "title": "Pixel the chatbot",
+  "disk": "llm/build/app/release/pixel_boot.img",
+  "flop2": "llm/build/app/release/pixel_disk2.img",
+  "ram": "4M",
+  "status": "ready (trained model v2)",
+  "controls": "Type a message and press Return, or use Edit > Keyboard… to type with the mouse. Pixel takes about 75 s to load in the emulator.",
+  "smoke": {
+   "times": [
+    180,
+    205,
+    225
+   ],
+   "actions": [
+    [
+     200,
+     "type",
+     "hi pixel"
+    ],
+    [
+     203,
+     "key",
+     "Return"
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "pixel_se": {
+  "title": "Pixel the chatbot (Macintosh SE, System 7, hard disk)",
+  "harddisk": "llm/build/app/release/pixel_se7.hd",
+  "machine": "macsefd",
+  "ram": "4M",
+  "status": "ready (trained model v2)",
+  "controls": "Type a message and press Return, or use Edit > Keyboard… to type with the mouse.",
+  "smoke": {
+   "times": [
+    120,
+    150,
+    170,
+    200
+   ],
+   "actions": [
+    [
+     130,
+     "type",
+     "hi pixel"
+    ],
+    [
+     133,
+     "key",
+     "Return"
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "blockworld": {
+  "title": "Blockworld",
+  "disk": "blockworld/build/blockworld.img",
+  "ram": "4M",
+  "status": "ready (M7: starts at once in a ready-made world; New world in the Esc menu makes another in about a minute)",
+  "controls": "Mouse looks, button mines and hits; W A S D move, Space jumps (or swims up), E places / uses / eats / shoots the bow, Shift+E places against a workbench, 1-9 pick the hotbar slot, Tab the inventory, V the view distance, Esc the menu (save and quit), M sound on/off.",
+  "smoke": {
+   "times": [
+    60,
+    70,
+    80
+   ],
+   "actions": [
+    [
+     61,
+     "click",
+     240,
+     171
+    ],
+    [
+     72,
+     "hold",
+     "w",
+     2
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "blockworld_se": {
+  "title": "Blockworld (Macintosh SE, 1.44 MB floppy)",
+  "disk": "blockworld/build/blockworld_se.img",
+  "machine": "macsefd",
+  "ram": "4M",
+  "status": "ready (same game; System 6.0.7 SE boot floppy)",
+  "controls": "As Blockworld.",
+  "smoke": {
+   "times": [
+    75,
+    85,
+    95
+   ],
+   "actions": [
+    [
+     76,
+     "click",
+     256,
+     171
+    ],
+    [
+     87,
+     "hold",
+     "w",
+     2
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "dream": {
+  "title": "Dream (tiny diffusion model, 4 MB)",
+  "disk": "dream/build/release/dream.img",
+  "ram": "4M",
+  "status": "ready",
+  "controls": "Type a subject (e.g. house) and press Return, or click Dream; Return with an empty box or Surprise me picks one of 220. The picture develops from static in 6 steps (about 95 s on a real Plus); click to stop after the current step. File menu: Copy Picture, Save as MacPaint. Loads its model for about 55 s first.",
+  "smoke": {
+   "times": [
+    150,
+    200,
+    240
+   ],
+   "actions": [
+    [
+     140,
+     "key",
+     "Return"
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "dream_1mb": {
+  "title": "Dream (1 MB Plus, 32x32)",
+  "disk": "dream/build/release/dream_1mb.img",
+  "ram": "1M",
+  "status": "ready",
+  "controls": "Same as Dream, at 32x32 with 191 subjects (about 48 s per picture on a real Plus).",
+  "smoke": {
+   "times": [
+    70,
+    85,
+    120
+   ],
+   "actions": [
+    [
+     60,
+     "key",
+     "Return"
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "dream_se": {
+  "title": "Dream (Macintosh SE, 1.44 MB floppy)",
+  "disk": "dream/build/release/dream_se.img",
+  "machine": "macsefd",
+  "ram": "4M",
+  "status": "ready (same app and model; System 6.0.7 SE boot floppy)",
+  "controls": "As Dream (about 85 s per picture on a real SE).",
+  "smoke": {
+   "times": [
+    150,
+    200,
+    240
+   ],
+   "actions": [
+    [
+     140,
+     "key",
+     "Return"
+    ]
+   ],
+   "animates": true
+  }
+ }
+}

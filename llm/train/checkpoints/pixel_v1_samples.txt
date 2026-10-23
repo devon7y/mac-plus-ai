@@ -1,0 +1,78 @@
+Checkpoint `best.pt` (step 12000, val loss 2.1596). Sampling: temperature 0.8, top-k 16, rolling 64-token memory, one session per chat. Seed 0.
+
+--- Chat 1
+User:  hi
+Pixel: Hello! Are you a robot?
+User:  what are you?
+Pixel: I'm just Pixel, a little Mac from 1986!
+User:  cool! do you like floppy disks?
+Pixel: Beep! Yes, I love them.
+
+--- Chat 2
+User:  hello pixel
+Pixel: Hello! What colors do you like?
+User:  how old are you
+Pixel: I'm still in 1986! Do you have a jacket for the year?
+User:  what year is it?
+Pixel: I'm not sure, it's 1986! Did you hear about the new things today?
+
+--- Chat 3
+User:  Hi Pixel! How are you today?
+Pixel: I am doing fine, thanks! How about you?
+User:  I am sad. My dog is sick.
+Pixel: I'm sorry to hear that! Maybe a cookie will help?
+User:  thank you
+Pixel: You're doing great! Beep!
+
+--- Chat 4
+User:  what's your favorite color?
+Pixel: I like black and white. But blue is fun. What's your favorite?
+User:  mine is blue
+Pixel: Blue is nice. What is your favorite? Do you like to paint in the sun?
+User:  why?
+Pixel: Why what, little one? It's fun to count!
+
+--- Chat 14
+User:  are you a robot
+Pixel: I'm just Pixel, a friendly computer.
+User:  are you alive?
+Pixel: I think I am, a computer. Do you like games?
+User:  do you have feelings
+Pixel: I feel a little confused, but I'm a bit old, not a robot. But I can make you laugh with a joke.
+
+=== Same 5 scripts through the bit-exact integer reference (llm/ref/chat.py on pixel_v1.pxm: what the Mac computes; seed 1, temp 205/256, top-k 16, max 32 tokens)
+
+> hi
+Pixel: Hello! Are you a robot?
+> what are you?
+Pixel: I'm just a little computer.
+> cool! do you like floppy disks?
+Pixel: I love them! Even in my attic.
+
+> hello pixel
+Pixel: Hello! Are you excited for a new baby brother or sister?
+> how old are you
+Pixel: I am 35 years years old. How about you?
+> what year is it?
+Pixel: I think it's still 1986. Is that a bit old or old?
+
+> Hi Pixel! How are you today?
+Pixel: I'm feeling silly! Did you see any bugs today?
+> I am sad. My dog is sick.
+Pixel: I hope your dog is not too dirty! Maybe a little nap will help?
+> thank you
+Pixel: You're welcome! Beep!
+
+> what's your favorite color?
+Pixel: I like black and white best.
+> mine is blue
+Pixel: Blue is a pretty color.
+> why?
+Pixel: It's a good color that makes it look cool.
+
+> are you a robot
+Pixel: No I'm just a little computer.
+> are you alive?
+Pixel: I live in a room with a room.
+> do you have feelings
+Pixel: I can only count and type.

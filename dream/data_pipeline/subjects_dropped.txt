@@ -1,0 +1,84 @@
+aircraft carrier	flat
+animal migration	scene
+arm	bodypart
+beach	scene
+beard	needs-face
+belt	unclear
+blackberry	colour
+blueberry	colour
+bottlecap	small
+bracelet	unclear
+bush	blob
+cake	duplicate
+calculator	text
+calendar	text
+camouflage	texture
+circle	shape
+compass	ambiguous
+cooler	box
+cup	duplicate
+dishwasher	box
+diving board	scene
+ear	bodypart
+elbow	bodypart
+eraser	box
+face	face
+finger	bodypart
+garden	scene
+garden hose	unclear
+goatee	needs-face
+golf club	thin
+grass	texture
+hexagon	shape
+hockey puck	blob
+hockey stick	thin
+hospital	text
+hot tub	scene
+hurricane	weather
+jail	unclear
+keyboard	text
+knee	bodypart
+leg	bodypart
+lighter	unclear
+line	shape
+map	text
+marker	duplicate
+mouth	bodypart
+nail	thin
+nose	bodypart
+ocean	scene
+octagon	shape
+oven	box
+passport	text
+picture frame	frame
+pillow	blob
+pond	scene
+pool	scene
+postcard	text
+potato	blob
+power outlet	indistinct
+rain	weather
+remote control	indistinct
+rifle	weapon
+river	scene
+roller coaster	scene
+school bus	duplicate
+sleeping bag	unclear
+snorkel	unclear
+spreadsheet	text
+square	shape
+squiggle	shape
+stereo	box
+stitches	unclear
+stop sign	text
+string bean	thin
+The Great Wall of China	scene
+The Mona Lisa	painting
+toe	bodypart
+toothpaste	text
+tornado	weather
+triangle	shape
+underwear	duplicate
+waterslide	scene
+yoga	pose
+zigzag	shape

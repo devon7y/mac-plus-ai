@@ -1,0 +1,97 @@
+{
+ "name": "H=256 tern_r2o step 100000",
+ "H": 256,
+ "quant": "tern_r2o",
+ "step": 100000,
+ "nparam": 277659,
+ "val_full": {
+  "loss": 0.9443236125745247,
+  "off": 0.6342544474306381,
+  "pen": 0.31006916514388666
+ },
+ "sim_subset_n": 6900,
+ "sim_cudnn": {
+  "loss": 0.9604696404081424,
+  "off": 0.6499427018539373,
+  "pen": 0.31052693855420516
+ },
+ "sim_step_float": {
+  "loss": 0.960511828150605,
+  "off": 0.6499849085819688,
+  "pen": 0.3105269195686363
+ },
+ "sim_step_h_int8": {
+  "loss": 0.9769063304807136,
+  "off": 0.6647292809267645,
+  "pen": 0.31217704955394915
+ },
+ "A_auto": 127,
+ "max_row_L1": 256,
+ "mac_auto": {
+  "loss": 0.961774702518301,
+  "off": 0.6511884439843205,
+  "pen": 0.31058625853398053,
+  "A": 127,
+  "wrap": true,
+  "rec_overflow_rate": 0.0,
+  "out_overflow_rate": 0.0,
+  "max_abs_S_rec": 5263.0,
+  "max_abs_S_out": 5659.0
+ },
+ "mac_sim": [
+  {
+   "loss": 0.961774702518301,
+   "off": 0.6511884439843205,
+   "pen": 0.31058625853398053,
+   "A": 127,
+   "wrap": true,
+   "rec_overflow_rate": 0.0,
+   "out_overflow_rate": 0.0,
+   "max_abs_S_rec": 5263.0,
+   "max_abs_S_out": 5659.0
+  },
+  {
+   "loss": 0.961774702518301,
+   "off": 0.6511884439843205,
+   "pen": 0.31058625853398053,
+   "A": 127,
+   "wrap": false,
+   "rec_overflow_rate": 0.0,
+   "out_overflow_rate": 0.0,
+   "max_abs_S_rec": 5263.0,
+   "max_abs_S_out": 5659.0
+  },
+  {
+   "loss": 0.9663149858584635,
+   "off": 0.6555642085515339,
+   "pen": 0.3107507773069297,
+   "A": 63,
+   "wrap": true,
+   "rec_overflow_rate": 0.0,
+   "out_overflow_rate": 0.0,
+   "max_abs_S_rec": 2627.0,
+   "max_abs_S_out": 2813.0
+  },
+  {
+   "loss": 0.9854791866840534,
+   "off": 0.6739303515932259,
+   "pen": 0.3115488350908276,
+   "A": 31,
+   "wrap": true,
+   "rec_overflow_rate": 0.0,
+   "out_overflow_rate": 0.0,
+   "max_abs_S_rec": 1290.0,
+   "max_abs_S_out": 1375.0
+  }
+ ],
+ "test_full": {
+  "loss": 0.9451758116145936,
+  "off": 0.6348793551506682,
+  "pen": 0.31029645646392545
+ },
+ "grid_mean_moves": 80.36666666666666,
+ "grid_hit_max": 2,
+ "grid_mean_moves_t0.3": 127.96666666666667,
+ "grid_hit_max_t0.3": 38,
+ "completions_leaving_frame": "54/80"
+}

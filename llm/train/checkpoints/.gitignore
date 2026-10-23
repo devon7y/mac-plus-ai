@@ -1,0 +1,3 @@
+# PyTorch checkpoints are large; the exported Pixel model files (*.pxl, ~1.45 MB) are small.
+*.pt
+pixel_v1.pxm

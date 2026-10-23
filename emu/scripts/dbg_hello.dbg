@@ -1,0 +1,4 @@
+printf "hello from debugscript\n"
+epset 4,1,{printf "EXC4 pc=%06X\n",pc; go}
+printf "epset done\n"
+go

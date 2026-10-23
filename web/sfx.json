@@ -1,0 +1,16 @@
+{
+ "about": "Insert: the hand pushing the disk in (high-passed above the hum, lifted 10 dB), the latch click at 0.87 s, the clunk onto the spindle at 1.59 s, at the recording's own pace. Eject: the pop at 0.15 s, the hand pulling it out at 1.78 s. trimLead: playback starts at the first sound within that many dB of the clip's peak (the barely audible lead-in is cut) and the timing marks of that clip (insert*, eject*) move with it. Machine sounds: clips cut by tools/make_sfx.mjs from Devon's licensed Epidemic Sound recordings in vendor/sounds_epidemic/ (not in git; never commit them). Times in seconds, found with tools/analyse_audio.mjs: onsets, loudness and spectra (clicks are broadband transients, the drive's head steps cluster at 1-3 kHz, the running machine is a steady low hum).",
+ "clips": {
+  "button":   {"file": "vendor/sounds_epidemic/power_button.mp3", "from": 5.10, "to": 5.42, "peak": -4},
+  "button2":  {"file": "vendor/sounds_epidemic/power_button.mp3", "from": 14.98, "to": 15.30, "peak": -4},
+  "powerOn":  {"file": "vendor/sounds_epidemic/power_on_boot_shutdown.mp3", "from": 2.25, "to": 7.5, "gain": -0.6, "fadeOut": 2.0},
+  "ambience": {"file": "vendor/sounds_epidemic/power_on_boot_shutdown.mp3", "from": 10.0, "to": 21.0, "gain": -0.6, "loop": 1.0},
+  "shutdown": {"file": "vendor/sounds_epidemic/power_on_boot_shutdown.mp3", "from": 40.9, "to": 48.5, "gain": -0.6, "fadeOut": 2.5},
+  "insert":   {"file": "vendor/sounds_epidemic/floppy_insert_copy_eject.mp3", "from": 1.05, "to": 3.0, "peak": -3, "highpass": 380, "boost": [0.0, 0.8, 10], "fadeOut": 0.25, "trimLead": -15},
+  "eject":    {"file": "vendor/sounds_epidemic/floppy_insert_copy_eject.mp3", "from": 86.62, "to": 88.75, "peak": -3, "highpass": 160, "fadeOut": 0.25, "trimLead": -15},
+  "seek1":    {"file": "vendor/sounds_epidemic/floppy_insert_copy_eject.mp3", "from": 36.05, "to": 37.55, "peak": -5, "highpass": 160, "fadeOut": 0.15},
+  "seek2":    {"file": "vendor/sounds_epidemic/floppy_insert_copy_eject.mp3", "from": 58.45, "to": 60.05, "peak": -5, "highpass": 160, "fadeOut": 0.15},
+  "seek3":    {"file": "vendor/sounds_epidemic/floppy_insert_copy_eject.mp3", "from": 45.75, "to": 47.0, "peak": -5, "highpass": 160, "fadeOut": 0.15}
+ },
+ "timing": {"insertClick": 0.87, "insertClunk": 1.59, "ejectPop": 0.15, "ejectPull": 1.78}
+}

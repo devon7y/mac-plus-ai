@@ -1,0 +1,33 @@
+# Apple's ROM and System software: never commit
+emu/roms/
+emu/disks/
+emu/work/
+emu/runs/
+emu/mame/
+*.ROM
+*.rom
+*.dc42
+*.dsk
+*.img
+*.image
+*.hda
+
+# Build output
+*/build/
+!narrowscreen/build/
+narrowscreen/build/*
+!narrowscreen/build/Narrow Screen.bin
+web/dist/
+web/vendor/
+web/node_modules/
+llm/data/
+dream/data/
+
+# Dream: FLUX-derived pictures and model weights are not redistributed (FLUX Kommunity License)
+dream/**/checkpoints/
+dream/**/*.pt
+dream/**/*.npz
+dream/**/*.drm
+
+.DS_Store
+__pycache__/

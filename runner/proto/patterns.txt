@@ -1,0 +1,309 @@
+; Rail Runner obstacle patterns, hand-designed.
+;
+; Each pattern starts with "= name tier weight". Then one row per 1 u of track (about 4 m),
+; three lanes per row (left middle right). The TOP row is the FAR end: read it like the track
+; ahead of you. Glyphs:
+;   .  empty                         T  parked train (a vertical run of T is one train)
+;   /  ramp up onto the train above  O  oncoming train: front, where it meets you
+;   o  oncoming train body (above O) _  low barrier: jump over it
+;   ^  high barrier: roll under it   #  wall barrier: change lanes
+; Tier = first speed band the pattern may appear in (0 = from the start, 3 = fastest).
+; Weight = relative pick frequency. test_escape.py proves every pattern can be survived from
+; every lane at every speed it can appear at, and ends with the player back on the ground.
+
+= warmup 0 2
+. . .
+. . .
+. _ .
+. . .
+. . .
+. . .
+
+= side_trains 0 3
+T . T
+T . T
+T . T
+T . T
+T . T
+T . T
+. . .
+. . .
+
+= one_of_each 0 3
+. . .
+T . .
+T . .
+T . .
+T _ ^
+. . .
+. . .
+
+= jump_row 0 2
+. . .
+_ _ _
+. . .
+. . .
+
+= roll_row 0 2
+. . .
+^ ^ ^
+. . .
+. . .
+
+= ramp_mid 0 3
+. . .
+. T .
+. T .
+. T .
+. T .
+. T .
+. T .
+. T .
+. / .
+. / .
+. / .
+. . .
+. . .
+
+= left_then_right 0 3
+. . T
+. . T
+. . T
+. . T
+. . .
+. . .
+T . .
+T . .
+T . .
+T . .
+. . .
+
+= walls_middle 0 2
+. . .
+# . #
+. . .
+. . .
+
+= hurdles 0 2
+. . .
+. _ .
+. . .
+. . .
+. . .
+. . .
+. . .
+. _ .
+. . .
+. . .
+
+= oncoming_left 1 2
+o . .
+o . .
+o . .
+o . .
+O . .
+. . .
+. . .
+. . .
+
+= oncoming_mid 1 3
+. o .
+. o .
+. o .
+. o .
+. o .
+. O .
+. . .
+. . .
+. . .
+
+= roof_run 1 3
+. . .
+T T .
+T T .
+T T .
+T T .
+T T .
+T T .
+T T .
+T / .
+T / .
+T / .
+. . .
+. . .
+
+= mixed_barriers 1 3
+. . .
+_ ^ _
+. . .
+. . .
+. . .
+. . .
+^ _ ^
+. . .
+. . .
+
+= tunnel_walls 1 2
+. . .
+# . .
+. . .
+. . .
+. . #
+. . .
+. . .
+# . .
+. . .
+. . .
+
+= trains_and_hurdle 1 3
+. . .
+T . T
+T . T
+T . T
+T _ T
+T . T
+T . T
+. . .
+. . .
+
+= zigzag 2 3
+. . .
+T T .
+T T .
+T T .
+. . .
+. . .
+. . .
+. . .
+. . .
+. . .
+. T T
+. T T
+. T T
+. . .
+. . .
+. . .
+. . .
+. . .
+. . .
+T T .
+T T .
+T T .
+. . .
+. . .
+
+= oncoming_squeeze 2 2
+. . .
+T . .
+T . .
+T . .
+T o .
+T o .
+T o .
+T o .
+T O .
+. . .
+. . .
+. . .
+
+= ramp_and_oncoming 2 3
+o . .
+o . .
+o . .
+O T .
+. T .
+. T .
+. T .
+. T .
+. T .
+. T .
+. / .
+. / .
+. / .
+. . .
+. . .
+
+= roll_after_train 2 2
+. . .
+. . .
+. ^ .
+. . .
+. . .
+T . T
+T . T
+T . T
+T . T
+. . .
+. . .
+
+= triple_threat 2 2
+. . .
+^ # _
+. . .
+. . .
+. . .
+. . .
+_ # ^
+. . .
+. . .
+
+= roof_hop 3 3
+. . .
+T . .
+T . .
+T . .
+T T .
+T T .
+. T .
+. T .
+. T .
+. T .
+. / .
+. / .
+. / .
+. . .
+. . .
+
+= double_oncoming 3 2
+o . o
+o . o
+o . o
+O . O
+. . .
+. . .
+. . .
+. _ .
+. . .
+. . .
+
+= gauntlet 3 2
+. . .
+T ^ T
+T . T
+T . T
+T . T
+T _ T
+T . T
+T . T
+. . .
+. . .
+
+= late_switch 3 3
+. . .
+. . .
+T T .
+T T .
+T T .
+T T .
+. . .
+. . .
+. . .
+. . .
+. . .
+. . .
+. T T
+. T T
+. T T
+. T T
+. . .
+. . .

@@ -1,0 +1,2 @@
+epset 4,1,{printf "ILLEGAL pc=%06X sp=%06X a0=%06X a1=%06X a2=%06X a3=%06X a4=%06X a5=%06X a6=%06X d0=%08X\n",pc,sp,a0,a1,a2,a3,a4,a5,a6,d0; history ,40; go}
+go

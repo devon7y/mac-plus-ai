@@ -1,0 +1,2 @@
+dofile(os.getenv("EMU") .. "/scripts/lib.lua")
+run_steps({ {28.0,function() mouse_to(12,8) end},{28.3,function() btn:set_value(1) end},{28.8,function() mouse_to(60,107) end},{29.3,function() btn:clear_value() end},{45,function() mouse_to(98,258) end},{45.2,function() btn:set_value(1) end},{45.4,function() btn:clear_value() end},{56,function() mouse_to(325,130) end},{56.2,function() btn:set_value(1) end},{56.4,function() btn:clear_value() end},{62,function() manager.machine:exit() end} })

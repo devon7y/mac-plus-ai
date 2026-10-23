@@ -1,0 +1,10 @@
+# Large or regenerable training material (data and all checkpoints live on Rorqual:
+# /scratch/devon7y/macplus_paint/)
+data/
+runs/
+*.npy
+__pycache__/
+# Float checkpoints are 1-2 MB each; keep only the shipped one (input to paint/app/tests/run_final.sh).
+checkpoints/*.pt
+!checkpoints/h256_int4_300k.pt
+checkpoints/*.npz

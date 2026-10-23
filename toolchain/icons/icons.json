@@ -1,0 +1,55 @@
+{
+ "_comment": "Finder icon presets for add_icon.py: creator, application icon and document types (icon paths relative to toolchain/icons; private/ is gitignored).",
+ "endurance": {
+  "creator": "ENDR",
+  "app": "art/endurance.txt"
+ },
+ "railrunner": {
+  "creator": "RRun",
+  "app": "art/railrunner.txt"
+ },
+ "doodle": {
+  "creator": "Ddle",
+  "app": "art/doodle.txt",
+  "docs": [
+   {
+    "type": "DMDL",
+    "icon": "art/doodle_model.txt"
+   },
+   {
+    "type": "PNTG",
+    "icon": "art/doodle_drawing.txt"
+   }
+  ]
+ },
+ "pixel": {
+  "creator": "Pxl1",
+  "app": "art/pixel.txt",
+  "docs": [
+   {
+    "type": "PXMD",
+    "icon": "art/pixel_model.txt"
+   }
+  ]
+ },
+ "dream": {
+  "creator": "Drem",
+  "app": "art/dream.txt",
+  "docs": [
+   {
+    "type": "DrmM",
+    "icon": "art/dream_model.txt"
+   }
+  ]
+ },
+ "blockworld": {
+  "creator": "BWrd",
+  "app": "art/blockworld.txt",
+  "docs": [
+   {
+    "type": "BWwd",
+    "icon": "art/blockworld_world.txt"
+   }
+  ]
+ }
+}
