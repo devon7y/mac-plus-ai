@@ -146,7 +146,9 @@ function makeAudioContext() {
     state.limiter.attack.value = 0.003; state.limiter.release.value = 0.12;
     state.gain.connect(state.spatial);
     if (state.pan) { state.spatial.connect(state.pan); state.pan.connect(state.limiter); } else state.spatial.connect(state.limiter);
-    state.limiter.connect(ac.destination);
+    // Last of all, the embedding page's fade (see setAudible).
+    state.embedGain = ac.createGain(); state.embedGain.gain.value = state.audible ? 1 : 0;
+    state.limiter.connect(state.embedGain); state.embedGain.connect(ac.destination);
     if (state.lastView) spatialize(...state.lastView, true);
     // Two volumes (Help > Settings): the hardware (hum, power, floppy, 3D key and mouse clicks) and
     // the software (the emulated Mac's own sound).
@@ -209,6 +211,21 @@ function spatialize(yaw, pitch, zoom, now = false) {
   state.spatial.gain.setTargetAtTime(g, t, now ? 0.005 : 0.08);
   if (state.pan) state.pan.pan.setTargetAtTime(pan, t, now ? 0.005 : 0.08);
 }
+
+// Embedded in a page (devon7y.com shows the Mac in a panel), the page says whether the panel is on
+// screen: the sound fades out over about a second while it isn't, and back in when it returns.
+const EMBEDDERS = /^(https:\/\/(www\.)?devon7y\.com|http:\/\/localhost(:\d+)?)$/;
+state.audible = true;
+function setAudible(on) {
+  state.audible = on;
+  if (!state.embedGain) return;
+  state.embedGain.gain.setTargetAtTime(on ? 1 : 0, state.audioCtx.currentTime, on ? 0.15 : 0.35);
+}
+window.addEventListener("message", (ev) => {
+  if (ev.source !== window.parent || !EMBEDDERS.test(ev.origin)) return;
+  const d = ev.data;
+  if (d && d.macplus === "audible" && typeof d.on === "boolean") setAudible(d.on);
+});
 
 // Root-mean-square levels for the tests: the Mac's sound, and the 3D click sounds.
 const rms = (an) => { if (!an) return -1; const a = new Float32Array(an.fftSize); an.getFloatTimeDomainData(a); let s = 0; for (const v of a) s += v * v; return Math.sqrt(s / a.length); };
