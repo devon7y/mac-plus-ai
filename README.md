@@ -95,6 +95,25 @@ seconds, with every program on the desktop.
 
 **→ [How the website works and how to build it](web/README.md)**
 
+## Blockworld
+
+![Blockworld on the website's 3D Mac: a yak in front of a tree in the starting world](docs/images/blockworld_site.jpg)
+
+A first-person block-building game for a 4 MB Mac Plus or an SE. You walk a generated world of
+hills, trees, caves and sea, then mine, place and craft. Yaks, boars, rams and fowl roam by day, and
+monsters come out at night. It starts in a ready-made world in about 9 seconds and saves yours. The
+art, sounds and names are all original.
+
+## Plants vs. Zombies (not in this repository)
+
+![Plants vs. Zombies level 1-9 on the website's 3D Mac](docs/images/pvz_site.jpg)
+
+A personal port of PopCap's 2009 game to a 4 MB Mac Plus and the SE, redrawn in 1-bit. It has all
+ten Day levels plus the Roof world with Dr. Zomboss, runs the game's own logic, and plays its music
+as square waves from the game's note data. It's built from a decompilation and the assets of a
+purchased copy, so neither its code nor its assets are published here. The screenshot shows level
+1-9, played by the port's built-in test bot. Plants vs. Zombies is a trademark of Electronic Arts.
+
 ## Also in this repository
 
 | Program | What it is | Mac |

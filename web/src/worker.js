@@ -24,7 +24,7 @@ const IN_DISK_SEQ = 12, IN_DISK_LEN = 13, IN_DISK_NAMELEN = 14, IN_DISK_ACK = 15
 const IN_RING = 16, IN_RING_EVENTS = 256, IN_EVENT_WORDS = 4;
 const INBOX_DATA = 256;                         // the inbox: the disk's name, then its bytes from here
 const EV_MOVE = 1, EV_DOWN = 2, EV_UP = 3, EV_KEYDOWN = 4, EV_KEYUP = 5;
-const CMD_PEEK = 1, CMD_DUMP_DISK = 2;
+const CMD_PEEK = 1, CMD_DUMP_DISK = 2, CMD_POKE32 = 3;
 const AU_WRITE = 0, AU_READ = 1, AU_HEADER_BYTES = 16;
 
 // The addresses Mini vMac's glue asks for with getInputValue (Infinite Mac's InputBufferAddresses).
@@ -292,6 +292,12 @@ function handleCommand() {
     const bytes = heap().slice(ramBase + a0, ramBase + a0 + a1);
     post({ type: "peek", id, addr: a0, bytes }, [bytes.buffer]);
   } else if (cmd === CMD_PEEK) {
+    post({ type: "peek", id, addr: a0, bytes: null });
+  } else if (cmd === CMD_POKE32) {                     // tests: write one big-endian 32-bit word
+    if (ramBase >= 0) {
+      const h = heap(), o = ramBase + a0;
+      h[o] = a1 >>> 24; h[o + 1] = (a1 >>> 16) & 255; h[o + 2] = (a1 >>> 8) & 255; h[o + 3] = a1 & 255;
+    }
     post({ type: "peek", id, addr: a0, bytes: null });
   } else if (cmd === CMD_DUMP_DISK) {
     const d = diskData(a0) || disk;                     // a0: which disk (0 = the built-in one)

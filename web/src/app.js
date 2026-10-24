@@ -13,7 +13,7 @@ const IN_RING = 16, IN_RING_EVENTS = 256, IN_EVENT_WORDS = 4;
 const INBOX_DATA = 256, INBOX_MAX = INBOX_DATA + 64 * 1048576;
 const IN_WORDS = IN_RING + IN_RING_EVENTS * IN_EVENT_WORDS;
 const EV_MOVE = 1, EV_DOWN = 2, EV_UP = 3, EV_KEYDOWN = 4, EV_KEYUP = 5;
-const CMD_PEEK = 1, CMD_DUMP_DISK = 2;
+const CMD_PEEK = 1, CMD_DUMP_DISK = 2, CMD_POKE32 = 3;
 const AUDIO_RING = 32768, AU_HEADER_BYTES = 16;
 const SCREEN_W = 512, SCREEN_H = 342;
 
@@ -356,6 +356,7 @@ function command(cmd, a0 = 0, a1 = 0) {
   });
 }
 state.peek = (addr, len) => command(CMD_PEEK, addr, len);
+state.poke32 = (addr, value) => command(CMD_POKE32, addr, value | 0);   // tests: stage a scene
 state.dumpDisk = (id = 0) => command(CMD_DUMP_DISK, id);
 
 // ------------------------------------------------------------------ Insert Disk

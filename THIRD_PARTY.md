@@ -8,6 +8,7 @@ The code, art, sounds and model weights in this repository are original work und
 | What | Where | Licence |
 | --- | --- | --- |
 | PyUSB 1.3.1 | `transfer/vendor/` | BSD 3-Clause (its `LICENSE` is beside it) |
+| A screenshot of a personal Plants vs. Zombies port (its characters © Electronic Arts / PopCap Games) | `docs/images/pvz_site.jpg` | shown for commentary only; no game code or assets are included |
 | The FLUX Kommunity License text (Black Forest Labs) | `dream/LICENSE-FLUX.md`, `web/LICENSE-FLUX.md` | the licence Dream is published under on the website, with the attribution notice and modification statement |
 
 ## Data and models used to train the networks

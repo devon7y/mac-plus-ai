@@ -14,7 +14,9 @@ classic freeware extras. There are no accounts, ads or tracking: a static site o
   files from that commit and checks their SHA-256. The code around the emulator is ours.
   [`src/worker.js`](src/worker.js) runs the emulator in a Web Worker and implements the interface the
   core calls. Input, video, sound and disk insertion pass through `SharedArrayBuffer`s, so the site
-  must be cross-origin isolated (COOP `same-origin` + COEP `require-corp` in `_headers`).
+  must be cross-origin isolated (COOP `same-origin` + COEP `require-corp` in `_headers`). It also
+  sends `Document-Isolation-Policy: isolate-and-require-corp`, which keeps it isolated inside an
+  iframe on a page that isn't (devon7y.com embeds it; desktop Chromium 137+ only).
 - **Speed.** "Fast" is 4×, and "Real Plus" is 1× for programs that time themselves by CPU speed.
   At 8×, the Plus keyboard path repeats keys. Mini vMac's AutoSlow drops to 1× whenever screen and
   input are quiet, which is exactly when Pixel and Dream are thinking. So while a program (not the

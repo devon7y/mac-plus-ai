@@ -273,10 +273,13 @@ def main():
 
     # Cloudflare Pages headers. COOP + COEP make the page cross-origin isolated, which browsers
     # require before they allow SharedArrayBuffer (the emulator's input, sound and waiting).
+    # Document-Isolation-Policy does the same inside an iframe on a page that isn't isolated
+    # (devon7y.com embeds the Mac); only desktop Chromium 137+ supports it so far.
     open(os.path.join(out, "_headers"), "w").write(
         "/*\n"
         "  Cross-Origin-Opener-Policy: same-origin\n"
         "  Cross-Origin-Embedder-Policy: require-corp\n"
+        "  Document-Isolation-Policy: isolate-and-require-corp\n"
         "  Cross-Origin-Resource-Policy: same-origin\n"
         "  X-Content-Type-Options: nosniff\n"
         "  Referrer-Policy: strict-origin-when-cross-origin\n"
