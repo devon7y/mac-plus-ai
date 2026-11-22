@@ -123,17 +123,35 @@ const badge = (t) => page.evaluate((t) => {
 
 // ------------------------------------------------------------------ the Mac
 const push = (...a) => page.evaluate((a) => window.__mac.pushEvent(...a), a);
-const screenGrab = () => page.evaluate(() => Array.from(document.getElementById("screen").getContext("2d")
-  .getImageData(0, 20, 512, 322).data.filter((_, i) => i % 4 === 0)));
+// Checks on the Mac's screen (below the menu bar), worked out inside the page so that only a number
+// comes back: copying the whole screen out (175,000 values as JSON) blocks the page for about 0.2 s,
+// which shows as a hitch in the video.
+//   "change"   pixels changed since the last "change" check     "setDesk"  remember the desktop
+//   "desk"     pixels in the icons' area that differ from it     "ink"      dark pixels in the input
+//   "title"    a hash of the window's title bar, right side                  line (left of x = 470)
+const scr = (op) => page.evaluate((op) => {
+  const W = window.__scr || (window.__scr = {});
+  const d = document.getElementById("screen").getContext("2d").getImageData(0, 20, 512, 322).data;
+  const g = new Uint8Array(512 * 322);
+  for (let i = 0; i < g.length; i++) g[i] = d[i * 4];
+  const diff = (a, b, y1, x1) => { let n = 0; for (let y = 0; y < y1; y++) for (let x = 0; x < x1; x++) if (a[y * 512 + x] !== b[y * 512 + x]) n++; return n; };
+  if (op === "change") { const p = W.prev; W.prev = g; return p ? diff(g, p, 322, 512) : 1e9; }
+  if (op === "setDesk") { W.desk = g; return 0; }
+  if (op === "desk") return diff(g, W.desk, 200, 340);
+  if (op === "ink") { let n = 0; for (let y = 280; y < 322; y++) for (let x = 0; x < 470; x++) if (g[y * 512 + x] < 128) n++; return n; }
+  let h = 2166136261;                                  // "title"
+  for (let y = 2; y < 20; y++) for (let x = 380; x < 512; x++) { h ^= g[y * 512 + x]; h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}, op);
 async function quiet(minMs, quietMs, maxMs) {     // wait at least minMs, then until the screen is still for quietMs
   const s0 = Date.now();
   await sleep(minMs);
-  let prev = await screenGrab(), still = 0;
+  await scr("change");
+  let still = 0;
   while (Date.now() - s0 < maxMs) {
     await sleep(500);
-    const cur = await screenGrab();
-    let d = 0; for (let i = 0; i < cur.length; i++) if (cur[i] !== prev[i]) d++;
-    prev = cur; still = d < 40 ? still + 500 : 0;
+    const d = await scr("change");
+    still = d < 40 ? still + 500 : 0;
     if (still >= quietMs) return;
   }
 }
@@ -150,27 +168,30 @@ async function type(text) {                        // real key events: the 3D ke
   }
 }
 async function cmd(k) { await page.keyboard.down("Control"); await sleep(80); await key(k); await page.keyboard.up("Control"); await sleep(200); }
-// Dark pixels in the input line at the bottom of the screen (Mac rows 300 and below, left of x = 470:
-// clear of the pointer parked at the right edge, whose shape changes when the app gets busy or idle).
-function inkInInput(g) {
-  let n = 0;
-  for (let y = 280; y < 322; y++) for (let x = 0; x < 470; x++) if (g[y * 512 + x] < 128) n++;
-  return n;
-}
 // Type a line and press Return; if the app didn't take it (the typed text is still in the input line:
-// Pixel ignores Return while it's still reading its last reply aloud), wait and press again.
+// Pixel ignores Return while it's still reading its last reply aloud), wait and press again. The input
+// line's ink is counted left of x = 470, clear of the pointer parked at the right edge (its shape
+// changes when the app gets busy or idle).
 async function send(text) {
-  const empty = inkInInput(await screenGrab());                                     // the input line before typing
+  const empty = await scr("ink");                                       // the input line before typing
   await type(text);
   for (let tries = 0; tries < 6; tries++) {
-    const before = await screenGrab();
+    const before = await scr("ink");
     await key("Enter");
     await sleep(1500);
-    const after = await screenGrab();
-    if (inkInInput(after) - empty < (inkInInput(before) - empty) * 0.5) return;   // the typed text left the input line
+    const after = await scr("ink");
+    if (after - empty < (before - empty) * 0.5) return;                 // the typed text left the input line
     console.log(`  Return not taken for "${text}", trying again`);
     await sleep(2500);
   }
+}
+// The desktop with its icons drawn (after an app quits, the Finder first shows an empty desktop for
+// about a second), held for half a second before the next app opens. Compared with the desktop grabbed
+// before the recording, in the icons' area (a selected icon or the pointer differ a little).
+async function desktopPause() {
+  const t0 = Date.now();
+  while (Date.now() - t0 < 10000 && (await scr("desk")) >= 3000) await sleep(100);
+  await sleep(500);
 }
 async function launch(name) {
   const [x, y] = await iconPoint(page, ...ICON[name]);
@@ -197,13 +218,18 @@ const screenView = async () => { await page.evaluate(() => window.__mac.view3d.r
 // the whole Mac, zooms into the screen and goes straight to Pixel (two questions), Dream (a banana)
 // and Guess My Doodle (a house). It ends on the Mac's guess with the links; demo_edit.py --hold
 // holds that last frame a little longer.
-await page.goto(url);
+// Quality fixed at high: on "auto" the page measures its first animated frames and can step down a
+// level (rebuilding its shaders, a visible hitch) in the middle of the opening zoom.
+await page.goto(url + (url.includes("?") ? "&" : "?") + "quality=high");
 await until(page, (p) => p.evaluate(() => !!(window.__mac && window.__mac.view3d)), 60000, "page");
 await overlay();
 await page.mouse.click(40, H - 40);                    // a click on the desk: browsers start sound only after one
 await until(page, (p) => p.evaluate(() => !!(window.__rec && window.__rec.dest)), 30000, "sound").catch(() => console.log("no sound yet"));
 await until(page, async (p) => (await macApp(p)) === "Finder", 120000, "Finder");
 await settled(page); await sleep(1500);
+await scr("setDesk");
+await page.evaluate(() => window.__mac.view3d.resetView(0.68));   // a practice zoom off camera: first-time
+await sleep(2000);                                                 // texture and shader work happens now
 await page.evaluate(() => window.__mac.view3d.jumpTo(0.1));   // the whole Mac on its desk
 await sleep(1500); await settled(page);
 await startRecording();
@@ -211,7 +237,8 @@ mark("start");
 await caption("A 1986 Macintosh Plus running three neural networks<small>In your browser at macintosh.devon7y.com</small>");
 await sleep(1300);
 await page.evaluate(() => window.__mac.view3d.resetView(0.68));   // zoom into the screen
-await sleep(1000);
+await sleep(700);
+await desktopPause();
 
 // Pixel
 await caption("Pixel: a 6.7-million-parameter language model<small>Ternary transformer with a mixture of experts. It reads its replies aloud with MacinTalk.</small>");
@@ -221,19 +248,25 @@ await fast(4);
 await quiet(6000, 3000, 90000);                       // the model loads from disk
 await fast(0);
 mark("pixel ready");
-const msgs = [["What year is it?", 1], ["Tell me a joke", 2]];
+// Pixel's title bar shows "thinking..." while it writes (and reads each sentence aloud before writing the
+// next, so the screen can sit still mid-reply) and "V4" when it's done: compare with it now, idle.
+const idleTitle = await scr("title");
+const pixelIdle = async () => (await scr("title")) === idleTitle;
+const msgs = [["what year is it?", 1], ["tell me a joke", 2]];      // lowercase, like most of its training chats: steadier answers
 for (const [m, speed] of msgs) {
   await send(m);
   if (speed > 1) await fast(speed);
   else await caption("Pixel: a 6.7-million-parameter language model<small>The website runs the Mac at 4×. A real Plus makes about 0.2 tokens per second.</small>");
-  await quiet(6000, 4500, 120000);
+  await sleep(3000);
+  await until(page, pixelIdle, 120000, "Pixel's reply");
+  await sleep(m === msgs[msgs.length - 1][0] ? 3500 : 800);   // the last sentence read aloud before quitting
   await fast(0);
   await sleep(800);
 }
 mark("pixel done");
 await cmd("q");
 await until(page, async (p) => (await macApp(p)) === "Finder", 30000, "Finder after Pixel");
-await sleep(600);
+await desktopPause();
 
 // Dream
 await caption("Dream: a diffusion model that paints from a word<small>0.9M ternary weights, 6 denoising steps. About 1.6 minutes per picture on a real Plus.</small>");
@@ -251,7 +284,7 @@ await sleep(1500);
 mark("dream done");
 await cmd("q");
 await until(page, async (p) => (await macApp(p)) === "Finder", 30000, "Finder after Dream");
-await sleep(600);
+await desktopPause();
 
 // Guess My Doodle
 await caption("Guess My Doodle: you draw, the Mac guesses<small>A sketch classifier trained on Google's Quick, Draw! 150 things, about 1 s per guess on a real Plus.</small>");
@@ -292,9 +325,13 @@ await until(page, async () => (await rd32(blk + 12)) === 4, 8000, "guessed").cat
 mark("guessed");
 await sleep(400);
 
-// The end: the links over the Mac's answer (the game moves on to round 2 after about 2.5 s)
+// The end: the links over the Mac's answer. The game says "Oh, I know! It's a house!" from about
+// 1.2 s to 3.8 s after its answer and moves on to round 2 at about 2.6 s, so the picture is frozen at
+// "freeze" (demo_edit.py --freeze freeze) while the sound runs on to the end of the sentence.
 await caption("Try it yourself: macintosh.devon7y.com<small>Code: github.com/devon7y/mac-plus-ai</small>");
 await sleep(1600);
+mark("freeze");
+await sleep(2500);
 mark("end");
 await stopRecording();
 await browser.close();

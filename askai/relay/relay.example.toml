@@ -1,0 +1,124 @@
+# Ask AI relay configuration (example). Copy it to ~/.askai/relay.toml and edit.
+# API keys are NEVER written here: each provider names the environment variable that holds its key.
+# Models whose provider has no key set are hidden from the Mac. Check with:  python3 relay.py --check
+
+[relay]
+name = "Ask AI relay"
+host = "0.0.0.0"            # listen on every interface (the WiFi modem connects over your LAN)
+port = 6800
+pin = ""                    # better: set ASKAI_PIN in the environment. The Mac sends it in Settings.
+default_model = "claude"    # id of the model a new session starts with
+max_reply_tokens = 1024     # per reply (about 4 KB of text)
+max_turn_chars = 2000       # longest message the Mac may send
+max_history_chars = 24000   # older turns are dropped beyond this
+replies_per_minute = 8      # per session
+replies_per_day = 400       # for the whole relay (a cost guard)
+max_connections = 4
+idle_minutes = 30
+# system_prompt = "..."     # used when the Mac sends no system prompt of its own
+# log_text = false          # true logs every message's text (off: only lengths)
+
+# ---------------------------------------------------------------------------------- providers
+
+[provider.anthropic]
+type = "anthropic"
+api_key_env = "ANTHROPIC_API_KEY"
+# base_url = "https://api.anthropic.com"
+
+[provider.openai]
+type = "openai"
+api_key_env = "OPENAI_API_KEY"
+# base_url = "https://api.openai.com/v1"
+
+[provider.gemini]
+type = "gemini"
+api_key_env = "GEMINI_API_KEY"
+# base_url = "https://generativelanguage.googleapis.com"
+
+[provider.openrouter]
+type = "openai_compatible"
+base_url = "https://openrouter.ai/api/v1"
+api_key_env = "OPENROUTER_API_KEY"
+headers = { "X-Title" = "Ask AI (Mac Plus)" }
+
+# A local server that speaks the OpenAI format needs no key: Ollama (port 11434) or LM Studio (1234).
+# Uncomment it and the "local" model below if you run one.
+# [provider.local]
+# type = "openai_compatible"
+# base_url = "http://localhost:11434/v1"
+
+[provider.mock]
+type = "mock"               # canned replies, free: for testing the line without spending anything
+# chars_per_second = 250
+# latency = 0.6
+
+# ---------------------------------------------------------------------------------- models
+# id: what the Mac remembers (no blanks). label: the Model menu item. tag: the name shown before
+# each reply in the transcript (8 characters at most). model: the provider's own model name.
+# Model names change: check each provider's model list and edit these to taste.
+
+[[model]]
+id = "claude"
+label = "Claude Opus 5.5"
+tag = "Claude"
+provider = "anthropic"
+model = "claude-opus-5-5"
+fallbacks = "default"       # if a safety classifier declines, Anthropic retries on a suitable model
+# effort = "low"            # faster first words for chat (Opus 5.5 defaults to medium)
+
+[[model]]
+id = "claude-sonnet"
+label = "Claude Sonnet 5.5"
+tag = "Claude"
+provider = "anthropic"
+model = "claude-sonnet-5-5"
+fallbacks = "default"
+
+[[model]]
+id = "claude-haiku"
+label = "Claude Haiku 5.5 (fast)"
+tag = "Claude"
+provider = "anthropic"
+model = "claude-haiku-5-5"
+
+[[model]]
+id = "gpt"
+label = "OpenAI GPT-5"
+tag = "GPT"
+provider = "openai"
+model = "gpt-5"
+
+[[model]]
+id = "gpt-mini"
+label = "OpenAI GPT-5 mini"
+tag = "GPT"
+provider = "openai"
+model = "gpt-5-mini"
+
+[[model]]
+id = "gemini"
+label = "Google Gemini 2.5 Flash"
+tag = "Gemini"
+provider = "gemini"
+model = "gemini-2.5-flash"
+
+[[model]]
+id = "llama"
+label = "Llama 3.3 70B (OpenRouter)"
+tag = "Llama"
+provider = "openrouter"
+model = "meta-llama/llama-3.3-70b-instruct"
+
+# [[model]]
+# id = "local"
+# label = "Local model (Ollama)"
+# tag = "Local"
+# provider = "local"
+# model = "llama3.2"
+
+[[model]]
+id = "mock"
+label = "Mock Model (free test)"
+tag = "Mock"
+provider = "mock"
+model = "mock-1"

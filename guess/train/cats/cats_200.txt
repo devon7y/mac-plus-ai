@@ -1,0 +1,200 @@
+airplane
+alarm clock
+ambulance
+angel
+ant
+anvil
+apple
+asparagus
+backpack
+banana
+bandage
+baseball bat
+beard
+bed
+bee
+bicycle
+birthday cake
+book
+bowtie
+brain
+broccoli
+broom
+bucket
+bulldozer
+bus
+butterfly
+cactus
+calculator
+camel
+camera
+campfire
+candle
+canoe
+car
+carrot
+castle
+cat
+ceiling fan
+cell phone
+chair
+clock
+cloud
+cookie
+couch
+crab
+crocodile
+crown
+cruise ship
+diamond
+donut
+door
+duck
+dumbbell
+ear
+elbow
+envelope
+eye
+eyeglasses
+fence
+finger
+fireplace
+fish
+flashlight
+flip flops
+floor lamp
+flower
+foot
+fork
+garden
+giraffe
+grapes
+guitar
+hamburger
+hammer
+hand
+harp
+hat
+headphones
+hedgehog
+helicopter
+helmet
+hockey puck
+hockey stick
+horse
+hospital
+hot air balloon
+hot dog
+hourglass
+house
+house plant
+ice cream
+jail
+kangaroo
+keyboard
+ladder
+laptop
+leaf
+light bulb
+lighter
+lighthouse
+lightning
+lion
+lollipop
+mailbox
+map
+megaphone
+mermaid
+microphone
+microwave
+mountain
+moustache
+mouth
+mug
+mushroom
+necklace
+nose
+ocean
+octopus
+onion
+palm tree
+panda
+pants
+paper clip
+parachute
+peanut
+pear
+peas
+pencil
+penguin
+pickup truck
+picture frame
+pineapple
+pizza
+popsicle
+rabbit
+rain
+rainbow
+remote control
+rhinoceros
+river
+rollerskates
+sailboat
+saw
+saxophone
+scissors
+scorpion
+see saw
+shark
+sheep
+shorts
+skateboard
+skull
+smiley face
+snail
+snake
+snorkel
+snowflake
+snowman
+soccer ball
+sock
+spreadsheet
+squirrel
+stairs
+star
+stereo
+stethoscope
+stitches
+stop sign
+stove
+strawberry
+streetlight
+submarine
+suitcase
+sun
+sweater
+swing set
+sword
+table
+teapot
+teddy-bear
+television
+tennis racquet
+tent
+The Eiffel Tower
+The Mona Lisa
+tooth
+toothbrush
+tornado
+traffic light
+train
+tree
+trumpet
+t-shirt
+umbrella
+underwear
+vase
+washing machine
+wine bottle
+wine glass
+zebra

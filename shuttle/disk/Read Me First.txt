@@ -1,0 +1,34 @@
+SHUTTLE STARTER DISK (for the Mac SE)
+
+The Mac Plus can't read this 1.44 MB disk, and a USB floppy drive can't write the Plus's 800K disks. The SE's SuperDrive can do both, so the SE makes the Plus's floppy.
+
+On this disk:
+
+  Disk Copy 4.2       Apple's free disk-image program
+  Plus Modem.image    the Plus's new startup floppy, as a Disk Copy image
+  Shuttle, Ask AI     the two programs on their own (see the end)
+  TeachText           to read this
+
+
+MAKE THE PLUS FLOPPY (on the SE)
+
+1. Find a double-density 800K floppy: one hole only, no "HD" hole. Everything on it will be erased.
+
+2. Open Disk Copy 4.2 (double-click it). Click once to close its title screen.
+
+3. Click "Load Image File..." and open "Plus Modem.image" from this disk. Disk Copy shows "Plus Modem (800K Macintosh format)".
+
+4. Eject this starter disk: press Command-Shift-1 (or drag its icon to the Trash if you can see it).
+
+5. Click "Make A Copy". When Disk Copy says "Please insert a disk to COPY ONTO...", insert the 800K floppy. Disk Copy formats it, writes it and checks it.
+
+6. When it says "The disk was duplicated successfully", eject the floppy (Command-Shift-1) and click Quit.
+
+7. Take the floppy to the Plus, insert it and switch the Plus on. It starts up at the Finder: double-click the "Plus Modem" disk icon (top right) to see Shuttle, Ask AI and a Read Me. Open the Read Me for the next steps.
+
+Make two copies if you have two floppies: keep one locked as a spare (slide the tab so you can see through the hole).
+
+
+IF THE PLUS ALREADY HAS A SYSTEM DISK
+
+You only need the programs: on the SE, copy Shuttle and Ask AI from this disk onto any 800K floppy (drag them in the Finder) and take that to the Plus. Shuttle is already set to dial "mac" at 19200. In Ask AI, choose Connection > Settings... and type ai as the relay address (19200 is already set).

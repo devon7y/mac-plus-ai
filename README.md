@@ -8,12 +8,16 @@ install). The story of the hardware: [Behind the Bezel](https://devon7y.github.i
 This repository holds two things:
 
 - **New programs for the Macintosh Plus** (1986: a 7.83 MHz Motorola 68000, no floating-point
-  unit, 1–4 MB of RAM, a 512×342 black-and-white screen). Among them are two neural networks that
-  run entirely on that machine:
+  unit, 1–4 MB of RAM, a 512×342 black-and-white screen). Among them are neural networks that run
+  entirely on that machine:
   - **Pixel**, a 6.7-million-parameter chatbot.
   - **Dream**, a diffusion model that paints pictures from a word.
-  
-  There are also four games and apps, and a system extension.
+  - **Guess My Doodle**, which guesses what you're drawing as you draw it.
+  - **Tune**, **Scribble Calc** and **Tank Duel**: a folk-tune composer, a handwriting calculator
+    and tank AIs trained by reinforcement learning.
+
+  There are also more games and apps, a Wi-Fi modem with file transfer and an AI chat client, and a
+  system extension.
 - **The website** that runs a Mac Plus with these programs in a browser, inside a 3D model of the
   compact Mac with a simulated CRT, working keys and drive sounds.
 
@@ -77,6 +81,22 @@ The trained weights aren't in this repository: they derive from FLUX-generated p
 published on the website, under the FLUX Kommunity License. The code, data pipeline and training
 scripts are all here. **→ [Read more about Dream](dream/README.md)**
 
+## Guess My Doodle: you draw, the Mac guesses
+
+![Guess My Doodle on the website's 3D Mac: a house, guessed at 99%](docs/images/guess_site.jpg)
+
+Google's *Quick, Draw!* on a Mac Plus. The Mac names a thing, you draw it with the mouse, and it
+guesses after every stroke until it gets it.
+
+- **Model:** a small convolutional network with about 351,000 ternary weights, reading a 32×32
+  1-bit picture of your drawing. It knows 150 *Quick, Draw!* categories.
+- **Accuracy:** 84% right on finished drawings (94% in its top 3), measured in the Mac's own integer
+  arithmetic on held-out drawings.
+- **On the Mac:** like Dream, it compiles its weights into 68000 code when it starts. About 0.9 s per
+  guess on a real Plus, and it runs on a stock 1 MB Plus. The weights are included.
+
+**→ [Read more about Guess My Doodle](guess/README.md)**
+
 ## The website
 
 ![Pixel on the website's 3D Mac](docs/images/pixel_site.jpg)
@@ -122,6 +142,14 @@ purchased copy, so neither its code nor its assets are published here. The scree
 | [**Blockworld**](blockworld/) | A first-person block-building game: walk, mine, place, craft, and save your world | 4 MB Plus, SE |
 | [**Endurance**](racer/) | A pseudo-3D endurance racer in the spirit of *Enduro*: pass enough cars each day to keep racing | 1 MB Plus |
 | [**Rail Runner**](runner/) | An endless runner on three lanes: jump, roll, hoverboard | 1 MB Plus |
+| [**Tune**](tune/) | Composes folk tunes in the style of three old tune books (1883 to 1903) with a small ternary recurrent network, shows them on a staff and plays them in two voices | 1 MB Plus, SE |
+| [**Scribble Calc**](calc/) | A handwriting calculator: write a sum with the mouse, a ternary network reads it, and the Mac answers with exact decimals | 1 MB Plus, SE |
+| [**Tank Duel**](tanks/) | Top-down tank battles against AIs trained by reinforcement learning and compiled to 68000 code. **Show the AI** draws what they're thinking | 1 MB Plus, SE |
+| [**Neural Pinball**](pinball/) | An AI-themed pinball table with integer physics | 1 MB Plus, SE |
+| [**Broadside**](broadside/) | The pencil-and-paper ship game Salvo against the Mac, whose Hard level works out the odds of every square | 1 MB Plus, SE |
+| [**Orbit Duel**](duel/) | A Spacewar-style duel around a star: against the computer, two on one keyboard, or two Macs over a serial cable or AppleTalk | 1 MB Plus, SE |
+| [**Ask AI**](askai/) | Chat with Claude or another model from the Plus, through a Wi-Fi modem and a small relay | 1 MB Plus, SE |
+| [**Shuttle**](shuttle/) and the [**Plus Modem**](modem/) | Files between a modern computer and the Plus over Wi-Fi: a Mac app, a server, and firmware for a DIY ESP32 Hayes modem | 1 MB Plus, SE |
 | [**Narrow Screen**](narrowscreen/) | A System 6 extension and Control Panel that shrinks the usable screen, for a Plus whose CRT picture is too wide to see the edges ([the story](https://devon7y.github.io/macintosh_plus/)) | any |
 
 Controls for all of them: [`CONTROLS.md`](CONTROLS.md).

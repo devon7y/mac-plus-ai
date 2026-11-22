@@ -1,0 +1,15 @@
+# Categories never used (abstract shapes and textures, scenes that are hard to draw in 20 s,
+# weapons): the rest are picked by measured accuracy (select_cats.py).
+line
+squiggle
+zigzag
+circle
+square
+triangle
+hexagon
+octagon
+camouflage
+grass
+animal migration
+The Great Wall of China
+rifle

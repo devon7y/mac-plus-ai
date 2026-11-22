@@ -1,0 +1,50 @@
+PLUS MODEM DISK
+
+This disk starts your Mac Plus with System 6 and has two programs:
+
+  Shuttle   moves files between this Mac and your MacBook.
+  Ask AI    chats with AI models (Claude, GPT, Gemini...).
+
+Both use the Wi-Fi modem on the modem port (the port with the telephone picture on the back of the Mac), at 19200 bps. They're already set up for it.
+
+
+1. CHECK THE MODEM
+
+- Plug the modem's cable into the modem port and power the modem.
+- Open Shuttle and choose Connection > Modem Terminal.
+- Type AT and press Return. The modem answers OK.
+  (Nothing comes back? Check the wiring guide, modem/HARDWARE.md on the MacBook.)
+- Close the Modem Terminal window.
+
+Wi-Fi: set it up from the MacBook with the modem on USB (python3 modem/tools/setup.py wifi), or type AT+HELP in Modem Terminal to see the modem's commands.
+
+
+2. FILES FROM THE MACBOOK (Shuttle)
+
+- On the MacBook, in Terminal, start the server:
+      python3 shuttle/server/shuttle_server.py
+  It shares the folder "Shuttle" in your home folder, and it prints a line like
+      AT+ALIAS mac=192.168.1.23:6801
+- In Shuttle's Modem Terminal, type that line once and press Return. The modem remembers it, so the name "mac" now means your MacBook.
+- Close Modem Terminal and click Connect. Shuttle dials "mac" and lists the files in the Shuttle folder.
+- Double-click a folder to open it; Up goes back.
+- Select a file and click Download, then choose where to save it.
+- Send File... sends a file from this Mac to the MacBook. It arrives in Shuttle > From Plus.
+
+Files keep their icons, resource forks, types and creators. StuffIt (.sit), BinHex (.hqx) and similar archives are unpacked by the MacBook: open them like folders. Disk images (.dsk, .img) arrive as Disk Copy images.
+
+Speed: about 10 minutes per megabyte. Cmd-. cancels a transfer.
+
+The Mac and the MacBook must be on the same Wi-Fi network at home. On campus (eduroam) devices can't reach each other, so Shuttle won't connect there; Ask AI still works.
+
+
+3. CHAT (Ask AI)
+
+Open Ask AI. It dials "ai", the AI built into the modem, and you can start typing. The API keys are stored in the modem from the MacBook (python3 modem/tools/setup.py key anthropic); this Mac never sees them.
+
+
+TIPS
+
+- Each program has Connection > Settings... for the dial name, speed and handshake.
+- Room on this disk for downloads: about {FREE}K. A hard disk or another floppy works too: Shuttle asks where to save.
+- If Shuttle can't connect: is the server running on the MacBook, and did you type the AT+ALIAS line?

@@ -1,0 +1,100 @@
+angel
+anvil
+apple
+asparagus
+banana
+beard
+bed
+bicycle
+book
+bowtie
+broom
+bus
+butterfly
+cactus
+calculator
+camel
+camera
+canoe
+car
+carrot
+castle
+clock
+cloud
+cookie
+crab
+crown
+cruise ship
+diamond
+door
+ear
+envelope
+eye
+eyeglasses
+fence
+fireplace
+fish
+giraffe
+grapes
+guitar
+hamburger
+hand
+harp
+headphones
+hedgehog
+horse
+hot air balloon
+hourglass
+house plant
+ice cream
+keyboard
+ladder
+laptop
+lighter
+lightning
+mermaid
+mountain
+mug
+ocean
+octopus
+palm tree
+pants
+paper clip
+pear
+penguin
+rabbit
+rain
+rainbow
+rollerskates
+saw
+saxophone
+shark
+shorts
+skateboard
+skull
+snail
+snowflake
+snowman
+soccer ball
+sock
+stairs
+star
+stitches
+stop sign
+stove
+strawberry
+sun
+swing set
+teddy-bear
+television
+tennis racquet
+The Eiffel Tower
+The Mona Lisa
+tornado
+traffic light
+tree
+t-shirt
+umbrella
+washing machine
+wine bottle
+wine glass

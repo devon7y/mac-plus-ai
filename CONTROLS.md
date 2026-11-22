@@ -205,7 +205,7 @@ computer level. Two players on one keyboard: Needle = W A S D, fire Space/Option
 | Left / right flipper | A / D (also Z and /, or ← and →) |
 | Both flippers | Shift, or the mouse button |
 | Plunger | Hold Space or S, let go to launch (harder pull = stronger) |
-| Nudge | W (or Space while the ball is in play); three warnings, then TILT |
+| Nudge | W (or Space while the ball is in play); two warnings, then TILT |
 | Start a game | Return; while the Mac plays by itself, a flipper key takes over its ball |
 | Pause | P |
 | Sound on/off | M (speech: File > Speech, when MacinTalk is installed) |

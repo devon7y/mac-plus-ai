@@ -51,5 +51,47 @@
     "icon": "art/blockworld_world.txt"
    }
   ]
+ },
+ "guess": {
+  "creator": "GsDd",
+  "app": "art/guess.txt",
+  "docs": [
+   {
+    "type": "GMDL",
+    "icon": "art/guess_model.txt"
+   }
+  ]
+ },
+ "tune": {
+  "creator": "Tune",
+  "app": "art/tune.txt"
+ },
+ "scribblecalc": {
+  "creator": "SCal",
+  "app": "art/scribblecalc.txt"
+ },
+ "pinball": {
+  "creator": "NPbl",
+  "app": "art/pinball.txt"
+ },
+ "broadside": {
+  "creator": "BrDs",
+  "app": "art/broadside.txt"
+ },
+ "orbitduel": {
+  "creator": "ODul",
+  "app": "art/orbitduel.txt"
+ },
+ "tankduel": {
+  "creator": "TnkD",
+  "app": "art/tankduel.txt"
+ },
+ "askai": {
+  "creator": "AskA",
+  "app": "art/askai.txt"
+ },
+ "shuttle": {
+  "creator": "Shtl",
+  "app": "art/shuttle.txt"
  }
 }

@@ -1,0 +1,7 @@
+{
+  "_comment": "Tank Duel's integer policies (train/model.py save_int). Per enemy type: Easy, Normal, Hard. 'player' drives the player's tank in the title screen's attract demo.",
+  "player": ["player.npz"],
+  "rusher": ["rusher_easy.npz", "rusher_normal.npz", "rusher_hard.npz"],
+  "sniper": ["sniper_easy.npz", "sniper_normal.npz", "sniper_hard.npz"],
+  "careful": ["careful_easy.npz", "careful_normal.npz", "careful_hard.npz"]
+}

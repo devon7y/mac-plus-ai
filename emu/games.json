@@ -90,7 +90,7 @@
   "flop2": "llm/build/app/release/pixel_disk2.img",
   "ram": "4M",
   "status": "ready (trained model v2)",
-  "controls": "Type a message and press Return, or use Edit > Keyboard… to type with the mouse. Pixel takes about 75 s to load in the emulator.",
+  "controls": "Type a message and press Return. Pixel reads its replies aloud when MacinTalk is in the System Folder (File > Speak Replies). It takes about 80 s to load in the emulator.",
   "smoke": {
    "times": [
     180,
@@ -265,6 +265,610 @@
     ]
    ],
    "animates": true
+  }
+ },
+ "guess": {
+  "title": "Guess My Doodle",
+  "disk": "guess/build/release/guess_plus.img",
+  "ram": "1M",
+  "status": "ready",
+  "controls": "Mouse. Return (or the big button) starts a round; draw the word in the box within 20 s while the Mac guesses. Undo (Cmd-Z or Delete), Clear (Cmd-K), Skip. M sound on/off; File > Speak Guesses with MacinTalk; Esc back to the title, then quit.",
+  "smoke": {
+   "times": [
+    34,
+    44,
+    52
+   ],
+   "actions": [
+    [
+     36,
+     "key",
+     "Return"
+    ],
+    [
+     38,
+     "key",
+     "Return"
+    ],
+    [
+     40,
+     "click",
+     100,
+     150
+    ],
+    [
+     41,
+     "click",
+     160,
+     200
+    ],
+    [
+     42,
+     "click",
+     200,
+     120
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "guess_se": {
+  "title": "Guess My Doodle (Macintosh SE, 1.44 MB floppy)",
+  "disk": "guess/build/release/guess_se.img",
+  "ram": "4M",
+  "status": "ready",
+  "controls": "As Guess My Doodle.",
+  "smoke": {
+   "times": [
+    69,
+    79,
+    87
+   ],
+   "actions": [
+    [
+     71,
+     "key",
+     "Return"
+    ],
+    [
+     73,
+     "key",
+     "Return"
+    ],
+    [
+     75,
+     "click",
+     100,
+     150
+    ],
+    [
+     76,
+     "click",
+     160,
+     200
+    ],
+    [
+     77,
+     "click",
+     200,
+     120
+    ]
+   ],
+   "animates": true
+  },
+  "machine": "macsefd"
+ },
+ "tune": {
+  "title": "Tune",
+  "disk": "tune/build/tune_plus.img",
+  "ram": "1M",
+  "status": "ready (the Mac composes and plays folk tunes: reel, jig, hornpipe, waltz, march, air and more; 1 MB Plus)",
+  "controls": "Mouse: Compose, Again, Play/Stop, Save, Copy buttons; menus Tune (type), Key, Play (tempo, fiddle/flute, bass, sound). Return = Again (new tune), Space = Play/Stop, M = sound on/off, Esc = stop. File > Quit.",
+  "smoke": {
+   "times": [
+    40,
+    60,
+    80
+   ],
+   "actions": [
+    [
+     30,
+     "key",
+     "Return"
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "tune_se": {
+  "title": "Tune (Macintosh SE, 1.44 MB floppy)",
+  "disk": "tune/build/tune_se.img",
+  "machine": "macsefd",
+  "ram": "4M",
+  "status": "ready (same app; System 6.0.7 SE boot floppy)",
+  "controls": "As Tune.",
+  "smoke": {
+   "times": [
+    90,
+    110,
+    130
+   ],
+   "actions": [
+    [
+     80,
+     "key",
+     "Return"
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "calc": {
+  "title": "Scribble Calc (handwriting calculator)",
+  "disk": "calc/build/release/scribble_calc_plus.img",
+  "ram": "1M",
+  "status": "ready",
+  "controls": "Mouse: write a sum on the paper and end it with = (e.g. 12 x (3.5 + 4) =); a small raised number after a number is a power. Click a symbol under the paper to fix it. Return = new line, Delete = undo, E / P = eraser / pen, Cmd-C copies the answer, Esc quits.",
+  "smoke": {
+   "times": [
+    20,
+    45,
+    60
+   ],
+   "actions": [
+    [
+     46,
+     "click",
+     200,
+     100
+    ],
+    [
+     50,
+     "click",
+     230,
+     100
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "calc_se": {
+  "title": "Scribble Calc (Macintosh SE, 1.44 MB floppy)",
+  "disk": "calc/build/release/scribble_calc_se.img",
+  "machine": "macsefd",
+  "ram": "4M",
+  "status": "ready (same app; System 6.0.7 SE boot floppy)",
+  "controls": "As Scribble Calc.",
+  "smoke": {
+   "times": [
+    90,
+    110,
+    120
+   ],
+   "actions": [
+    [
+     111,
+     "click",
+     250,
+     100
+    ],
+    [
+     114,
+     "click",
+     280,
+     100
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "pinball": {
+  "title": "Neural Pinball",
+  "disk": "pinball/build/game/pinball.img",
+  "ram": "1M",
+  "status": "ready",
+  "controls": "A / D (or Z and /, or the arrows): flippers; Shift or the mouse button: both. Hold Space or S to pull the plunger, let go to launch. W (or Space in play): nudge (tilt!). Return: start (or a flipper key: take over the AI's ball). P: pause, M: sound, Esc: end the game / quit.",
+  "smoke": {
+   "times": [
+    25,
+    40,
+    45
+   ],
+   "actions": [
+    [
+     30,
+     "key",
+     "Return"
+    ],
+    [
+     32,
+     "hold",
+     "S",
+     0.9
+    ],
+    [
+     36,
+     "hold",
+     "A",
+     0.3
+    ],
+    [
+     38,
+     "hold",
+     "D",
+     0.3
+    ],
+    [
+     41,
+     "hold",
+     "A",
+     0.3
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "pinball_se": {
+  "title": "Neural Pinball (Macintosh SE, 1.44 MB floppy)",
+  "disk": "pinball/build/game/pinball_se.img",
+  "machine": "macsefd",
+  "ram": "4M",
+  "status": "ready",
+  "controls": "As Neural Pinball.",
+  "smoke": {
+   "times": [
+    75,
+    90,
+    95
+   ],
+   "actions": [
+    [
+     80,
+     "key",
+     "Return"
+    ],
+    [
+     82,
+     "hold",
+     "S",
+     0.9
+    ],
+    [
+     86,
+     "hold",
+     "A",
+     0.3
+    ],
+    [
+     88,
+     "hold",
+     "D",
+     0.3
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "broadside": {
+  "title": "Broadside",
+  "disk": "broadside/build/release/broadside.img",
+  "ram": "1M",
+  "status": "ready (Easy / Normal / Hard; Options > Show the Mac's Thinking shades your grid with Hard's exact probabilities; Salvo and No Touching rules; record and statistics saved)",
+  "controls": "Mouse. Drag a ship to move it, click it (or R) to turn it, Tab = random fleet, Return = start. Click a square in Enemy waters to fire (or W A S D / arrows to aim, Space to fire). T = show the Mac's thinking, M = sound, Esc = quit.",
+  "smoke": {
+   "times": [
+    30,
+    50,
+    70
+   ],
+   "actions": [
+    [
+     32,
+     "key",
+     "Return"
+    ],
+    [
+     36,
+     "click",
+     329,
+     132
+    ],
+    [
+     48,
+     "key",
+     "T"
+    ],
+    [
+     58,
+     "click",
+     293,
+     186
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "broadside_se": {
+  "title": "Broadside (Macintosh SE, 1.44 MB floppy)",
+  "disk": "broadside/build/release/broadside_se.img",
+  "machine": "macsefd",
+  "ram": "4M",
+  "status": "ready (same game; System 6.0.7 SE boot floppy)",
+  "controls": "As Broadside.",
+  "smoke": {
+   "times": [
+    70,
+    90,
+    110
+   ],
+   "actions": [
+    [
+     72,
+     "key",
+     "Return"
+    ],
+    [
+     76,
+     "click",
+     374,
+     141
+    ],
+    [
+     86,
+     "key",
+     "T"
+    ],
+    [
+     96,
+     "click",
+     334,
+     201
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "duel": {
+  "title": "Orbit Duel",
+  "disk": "duel/build/orbitduel.img",
+  "ram": "1M",
+  "status": "ready (vs the computer, two players on one keyboard, or Mac to Mac over a serial cable or AppleTalk; serial lockstep verified Plus-Plus and Plus-SE in MAME; two-Mac AppleTalk untested, MAME has no LocalTalk)",
+  "controls": "A/D turn, W thrust, Space or Shift fire, S hyperspace (arrows also work). Return pauses, M sound, Esc back to the title / quit. Title: 1 vs computer, 2 two players (Needle W A S D + Space/Option/Command, Wedge I J K L or arrows + Shift/Enter), 3 AppleTalk, 4 serial cable; Tab = computer level.",
+  "smoke": {
+   "times": [
+    20,
+    30,
+    34,
+    35
+   ],
+   "actions": [
+    [
+     24,
+     "key",
+     "1"
+    ],
+    [
+     26,
+     "hold",
+     "W",
+     2
+    ],
+    [
+     29,
+     "key",
+     "Space"
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "duel_se": {
+  "title": "Orbit Duel (Macintosh SE, 1.44 MB floppy)",
+  "disk": "duel/build/orbitduel_se.img",
+  "machine": "macsefd",
+  "ram": "4M",
+  "status": "ready (same game; System 6.0.7 SE boot floppy with the Chooser)",
+  "controls": "As Orbit Duel.",
+  "smoke": {
+   "times": [
+    60,
+    70,
+    74,
+    75
+   ],
+   "actions": [
+    [
+     64,
+     "key",
+     "1"
+    ],
+    [
+     66,
+     "hold",
+     "W",
+     2
+    ],
+    [
+     69,
+     "key",
+     "Space"
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "tanks": {
+  "title": "Tank Duel",
+  "disk": "tanks/build/tankduel.img",
+  "ram": "1M",
+  "status": "ready",
+  "controls": "W/S drive, A/D turn the hull, the mouse aims the turret, click (or Space / Shift) fires. Return or P pauses, Tab shows the AI's sensors, M sound, Esc back to the title / quit. Options menu: Sound, Show the AI, Easy / Normal / Hard.",
+  "smoke": {
+   "times": [
+    28,
+    34,
+    39,
+    44
+   ],
+   "actions": [
+    [
+     30,
+     "key",
+     "Tab"
+    ],
+    [
+     33,
+     "key",
+     "Return"
+    ],
+    [
+     36,
+     "hold",
+     "W",
+     3
+    ],
+    [
+     37,
+     "click",
+     300,
+     120
+    ],
+    [
+     40,
+     "hold",
+     "D",
+     2
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "tanks_se": {
+  "title": "Tank Duel (Macintosh SE, 1.44 MB floppy)",
+  "disk": "tanks/build/tankduel_se.img",
+  "machine": "macsefd",
+  "ram": "4M",
+  "status": "ready (same game; System 6.0.7 SE boot floppy)",
+  "controls": "As Tank Duel.",
+  "smoke": {
+   "times": [
+    65,
+    75,
+    80,
+    85
+   ],
+   "actions": [
+    [
+     70,
+     "key",
+     "Return"
+    ],
+    [
+     73,
+     "hold",
+     "W",
+     3
+    ],
+    [
+     77,
+     "click",
+     300,
+     120
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "askai": {
+  "title": "Ask AI (chat with AI models through a Wi-Fi modem)",
+  "disk": "askai/build/release/askai_plus.img",
+  "ram": "1M",
+  "status": "ready (needs the relay and a Hayes Wi-Fi modem; in the emulator it shows its welcome note)",
+  "controls": "Type a message, Return. Connection > Settings… / Connect (Cmd-K) / Modem Terminal; Model menu; File > New Chat; Cmd-. stops a reply.",
+  "smoke": {
+   "times": [
+    22,
+    34
+   ],
+   "actions": [
+    [
+     24,
+     "type",
+     "hello mac"
+    ],
+    [
+     30,
+     "key",
+     "Return"
+    ]
+   ],
+   "animates": true
+  }
+ },
+ "askai_se": {
+  "title": "Ask AI (Macintosh SE, 1.44 MB floppy)",
+  "disk": "askai/build/release/askai_se.img",
+  "ram": "4M",
+  "status": "ready (needs the relay and a Hayes Wi-Fi modem; in the emulator it shows its welcome note)",
+  "controls": "Type a message, Return. Connection > Settings… / Connect (Cmd-K) / Modem Terminal; Model menu; File > New Chat; Cmd-. stops a reply.",
+  "smoke": {
+   "times": [
+    60,
+    75
+   ],
+   "actions": [
+    [
+     62,
+     "type",
+     "hello mac"
+    ],
+    [
+     68,
+     "key",
+     "Return"
+    ]
+   ],
+   "animates": true
+  },
+  "machine": "macsefd"
+ },
+ "shuttle": {
+  "title": "Plus Modem disk (Shuttle file transfer + Ask AI; needs the Wi-Fi modem and the Shuttle server)",
+  "disk": "shuttle/build/plus_modem_800k.img",
+  "ram": "1M",
+  "status": "ready (needs the Shuttle server on the MacBook and the Wi-Fi modem; in the emulator it starts at the Finder)",
+  "controls": "Finder: double-click Plus Modem, then Shuttle or Ask AI. Shuttle: Connect (Cmd-K), double-click folders, Download (Cmd-D), Send File (Cmd-U), Cmd-. cancels; Connection > Settings / Modem Terminal.",
+  "smoke": {
+   "times": [
+    30,
+    50
+   ],
+   "actions": [
+    [
+     32,
+     "click",
+     410,
+     40
+    ],
+    [
+     32.25,
+     "click",
+     410,
+     40
+    ],
+    [
+     40,
+     "click",
+     301,
+     100
+    ],
+    [
+     40.25,
+     "click",
+     301,
+     100
+    ]
+   ]
   }
  }
 }
