@@ -30,7 +30,12 @@ export async function launch(kind, opts = {}) {
   const args = kind === "chromium" ? ["--autoplay-policy=no-user-gesture-required", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"]
     : kind === "chrome" ? ["--autoplay-policy=no-user-gesture-required", "--use-gl=swiftshader", "--enable-unsafe-swiftshader"] : [];
   const firefoxUserPrefs = kind === "firefox" ? { "media.autoplay.default": 0, "media.autoplay.blocking_policy": 0 } : undefined;
-  const browser = await type.launch({ headless: true, args, firefoxUserPrefs, executablePath: kind === "chrome" ? CHROME : undefined });
+  // "gpu" = the installed Google Chrome, in a window, on the real GPU (full quality, for screenshots).
+  const browser = kind === "gpu"
+    ? await pw.chromium.launch({ headless: false, executablePath: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        args: ["--autoplay-policy=no-user-gesture-required", "--window-position=0,0", "--disable-backgrounding-occluded-windows",
+               "--disable-renderer-backgrounding", "--disable-background-timer-throttling"] })
+    : await type.launch({ headless: true, args, firefoxUserPrefs, executablePath: kind === "chrome" ? CHROME : undefined });
   const context = await browser.newContext({ viewport: opts.viewport || { width: 1280, height: 900 }, deviceScaleFactor: opts.dpr || 1 });
   const page = await context.newPage();
   page.on("pageerror", (e) => console.log(`[${kind} pageerror]`, e.message));

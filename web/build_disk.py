@@ -65,6 +65,14 @@ APPS = [
     {"name": "Doodle",      "entry": "doodle"},
     {"name": "Pixel",       "entry": "pixel"},
     {"name": "Dream",       "entry": "dream"},
+    # 2026-10-23 round: original apps, all publishable (manager)
+    {"name": "Guess My Doodle", "entry": "guess"},
+    {"name": "Tune",            "entry": "tune"},
+    {"name": "Scribble Calc",   "entry": "calc"},
+    {"name": "Neural Pinball",  "entry": "pinball"},
+    {"name": "Tank Duel",       "entry": "tanks"},
+    {"name": "Broadside",       "entry": "broadside"},
+    {"name": "Orbit Duel",      "entry": "duel"},
 ]
 # Extra files for the System Folder (MacBinary). Glider 4.06 asks for its "MacsBug" file at every
 # launch ("to improve performance"); it is part of Glider's distribution: a tiny 'dbgr' that the
@@ -72,8 +80,8 @@ APPS = [
 # Checked in the browser emulator (2026-10-20): no nag, and the game draws and plays correctly.
 EXTRA_SYSTEM = ["toolchain/build/demo/extras/MacsBug.bin"]
 VISIBLE_DATA = {"The House", "The House 2", "Glider History", "Dream FLUX License"}
-COLS, ROWS = [22, 98], [32, 94, 156, 218]       # desktop icon top-left corners (global coordinates): the apps
-DOC_COL = 174                                   # the documents (Read Me, Credits & Licenses), a third column
+COLS, ROWS = [22, 98, 174, 250], [32, 94, 156, 218]   # desktop icon top-left corners (global coordinates): the apps
+DOC_COL = 326                                   # the documents (Read Me, Credits & Licenses), a fifth column
 WINDOW_GRID = ([14, 134, 254], [14, 76, 138])   # icon positions inside the disk window
 DISK_WINDOW = (60, 40, 280, 420)                # top, left, bottom, right of the disk window
 
@@ -88,7 +96,13 @@ CREDITS_NAME = "Credits & Licenses"
 CREDITS = """CREDITS & LICENSES
 
 THIS MAC'S OWN PROGRAMS
-Endurance, Rail Runner, Blockworld, Doodle, Pixel and Dream, by Devon.
+Endurance, Rail Runner, Blockworld, Doodle, Pixel, Dream, Guess My Doodle, Tune, Scribble Calc, Neural Pinball, Tank Duel, Broadside and Orbit Duel, by Devon. Source: https://github.com/devon7y/mac-plus-ai
+
+TRAINING DATA
+Doodle and Guess My Doodle learned from the Quick, Draw! dataset by Google (https://quickdraw.withgoogle.com/data), licensed under Creative Commons Attribution 4.0 (https://creativecommons.org/licenses/by/4.0/). Modified: drawings resampled and rasterised.
+Scribble Calc learned from UJI Pen Characters v2 (Prat, Castro, Llorens, Marzal, Vilar) and Pen-Based Recognition of Handwritten Digits (Alpaydin, Alimoglu), UCI Machine Learning Repository, both CC BY 4.0. Modified: resampled, slanted, made mouse-like.
+Tune learned from public-domain melodies: O'Neill's Music of Ireland (1903, transcribed by the O'Neill's Project), Ryan's Mammoth Collection (1883) and Kerr's Merry Melodies (c. 1880).
+Pixel learned from conversations written by Qwen2.5-7B-Instruct (Apache License 2.0).
 
 DREAM AND FLUX
 Dream is for non-commercial use.
@@ -142,9 +156,26 @@ README_APPS = [
                      ("Command Q", "Quit")]),
     ("Doodle", [("Drag", "Draw with the chosen tool"), ("Finish it", "Type what it is, then Return"),
                 ("Click", "Stop the AI drawing"), ("Command Z", "Undo"), ("File menu", "Save, Open, Quit")]),
-    ("Pixel", [("Type", "Your message"), ("Return", "Send"), ("Delete", "Correct a typo"), ("File menu", "New Chat, Quit")]),
+    ("Pixel", [("Type", "Your message"), ("Return", "Send"), ("Delete", "Correct a typo"),
+               ("File menu", "New Chat, Speak Replies (on or off), Quit")]),
     ("Dream", [("Type", "A subject, e.g. house"), ("Return", "Dream it"), ("Surprise me", "Random subject"),
                ("Click", "Stop after this step"), ("File menu", "Copy, Save, Quit")]),
+    ("Guess My Doodle", [("Mouse", "Draw in the box"), ("Return", "Start / Go / Next"), ("Command Z or Delete", "Undo a stroke"),
+                         ("Command K", "Clear the drawing"), ("M", "Sound on/off"), ("Esc or `", "Title, then quit")]),
+    ("Tune", [("Compose", "Write a tune (Return: a new one)"), ("Space", "Play / Stop"),
+              ("Tune, Key, Play menus", "Type, key, tempo, fiddle or flute, bass"), ("Command S", "Save as ABC text"),
+              ("M", "Sound on/off"), ("File menu", "Quit")]),
+    ("Scribble Calc", [("Mouse", "Write a sum on the paper, end it with ="), ("Click a symbol below", "Fix a misread symbol"),
+                       ("Delete", "Undo"), ("E / P", "Eraser / pen"), ("Return", "New line"), ("Esc or `", "Quit")]),
+    ("Neural Pinball", [("A / D", "Left / right flipper"), ("Shift or mouse button", "Both flippers"),
+                        ("Space or S", "Hold, then let go to launch"), ("W", "Nudge (careful: tilt)"), ("Return", "Start a game"),
+                        ("P", "Pause"), ("Esc or `", "End the game, then quit")]),
+    ("Tank Duel", [("W / S", "Drive"), ("A / D", "Turn"), ("Mouse", "Aim the turret"), ("Click, Space or Shift", "Fire"),
+                   ("Tab", "Show the AI"), ("Return or P", "Pause"), ("Esc or `", "Title, then quit")]),
+    ("Broadside", [("Drag / click", "Place / turn a ship"), ("Tab, Return", "Random fleet, start"), ("Click", "Fire"),
+                   ("T", "Show the Mac's thinking"), ("Command 1 / 2 / 3", "Easy / Normal / Hard"), ("Esc or `", "Quit")]),
+    ("Orbit Duel", [("A / D", "Turn"), ("W", "Thrust"), ("Space or Shift", "Fire"), ("S", "Hyperspace"),
+                    ("1 / 2", "Play the computer / two players"), ("Esc or `", "Title, then quit")]),
     ("Talking Moose", [("Apple menu", "Talking Moose"), ("Close box", "Close its settings window")]),
 ]
 README = ("MACINTOSH PLUS, IN YOUR BROWSER\n\n"

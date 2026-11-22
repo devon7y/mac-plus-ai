@@ -20,9 +20,12 @@ resource 'MENU' (128) {
 	  "-", noIcon, noKey, noMark, plain }
 };
 
+/* Speak Replies (item 2) starts dimmed; main.c enables it when MacinTalk is found. */
 resource 'MENU' (129) {
-	129, textMenuProc, allEnabled, enabled, "File",
+	129, textMenuProc, 0x7FFFFFF9, enabled, "File",
 	{ "New Chat", noIcon, "N", noMark, plain;
+	  "Speak Replies", noIcon, noKey, noMark, plain;
+	  "-", noIcon, noKey, noMark, plain;
 	  "Quit", noIcon, "Q", noMark, plain }
 };
 

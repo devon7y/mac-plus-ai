@@ -21,6 +21,17 @@ local swap_stage, swap_t = 0, 0
 local typed_text = os.getenv("TYPE")
 local typed, type_t, return_done, ret_down = false, nil, false, nil
 local ramtop = manager.machine.devices[":maincpu"].spaces["program"]
+-- MENU_TOGGLE=1: when the script is done, choose File > Speak Replies (shots of the open menu and after)
+local toggle = os.getenv("MENU_TOGGLE")
+local tg_stage, tg_t = 0, 0
+local mports = manager.machine.ioport.ports
+local mbtn = (mports[":macadb:MOUSE0"] and mports[":macadb:MOUSE0"].fields["Mouse Button 0"])
+             or (mports[":MOUSE0"] and mports[":MOUSE0"].fields["Mouse Button"])
+local function mouse_to(h, v)   -- absolute cursor move (global coordinates), as emu/scripts/lib.lua
+  mem:write_u16(0x828, v); mem:write_u16(0x82A, h)
+  mem:write_u16(0x82C, v); mem:write_u16(0x82E, h)
+  mem:write_u8(0x8CE, mem:read_u8(0x8CF))
+end
 local function scan()
   for a = 0x8000, 0x3FFFF0, 2 do
     if mem:read_u16(a) == 0x5058 and mem:read_u32(a) == MAGIC and mem:read_u32(a + 8) == 0xAFA7B3DE
@@ -36,6 +47,19 @@ local function report(tag)
     tag, manager.machine.time:as_double(), f(12), f(16), f(20), f(24), f(76), f(28), f(32), f(36), f(40), f(44),
     f(48), f(52), f(56), f(64), f(68), f(72), f(80)))
   print(string.format("%s minFree=%d", tag, f(188)))
+  -- speech (main.c dbg.sp at +240, speech.h): state, on, ticks, rdTicks, count, beeps, err, tx, ph
+  local function str(off)
+    local t = {}
+    for i = 0, 62 do
+      local c = mem:read_u8(base + off + i)
+      if c == 0 then break end
+      t[#t + 1] = (c >= 32 and c < 127) and string.char(c) or "?"
+    end
+    return table.concat(t)
+  end
+  print(string.format("%s SPEECH state=%d on=%d ticks=%d rdTicks=%d count=%d beeps=%d err=%d", tag, f(240), f(244),
+    f(248), f(252), f(256), f(260), f(264)))
+  if f(256) > 0 then print(string.format('%s SPEECH tx="%s" ph="%s"', tag, str(268), str(332))) end
 end
 local function report_prof()
   local names = {"norm", "tern", "att", "attk", "ffn", "head", "sample", "aq", "az", "as", "ar", "fr", "fs", "fq"}
@@ -140,6 +164,14 @@ sub = emu.add_machine_frame_notifier(function()
     shot("ready_screen")
     print("RESULT READY")
     manager.machine:exit()
+    return
+  end
+  if toggle and st == 4 and tg_stage < 5 then
+    if tg_stage == 0 then report("BEFORE_TOGGLE"); mouse_to(52, 8); tg_stage = 1; tg_t = t + 0.5
+    elseif tg_stage == 1 and t >= tg_t then mbtn:set_value(1); tg_stage = 2; tg_t = t + 0.8
+    elseif tg_stage == 2 and t >= tg_t then mouse_to(70, 44); tg_stage = 3; tg_t = t + 0.8
+    elseif tg_stage == 3 and t >= tg_t then shot("file_menu"); mbtn:clear_value(); tg_stage = 4; tg_t = t + 4
+    elseif tg_stage == 4 and t >= tg_t then tg_stage = 5 end
     return
   end
   if st == 4 or st < 0 or (typed and st == 2) then

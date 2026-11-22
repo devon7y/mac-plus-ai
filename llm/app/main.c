@@ -4,7 +4,9 @@
  * Loads the model ("Pixel Model 1" next to the app, "Pixel Model 2" there or on any mounted disk;
  * if missing, ejects the boot floppy and asks for Pixel Disk 2), picks W4 or B5 storage from the
  * free memory, then runs the chat full screen (under the menu bar, whatever width screenBits has):
- * type a line, press Return, Pixel answers token by token. "reset" clears Pixel's memory.
+ * type a line, press Return, Pixel answers token by token. "reset" clears Pixel's memory. With the
+ * MacinTalk file in the System Folder (or next to the app), Pixel reads each sentence of its replies
+ * aloud as soon as it is written (speech.c; File > Speak Replies).
  *
  * Test mode: a text file "Pixel Test" next to the app holds "seed temp256 topk max_new" and then one
  * user line per line; the app types them itself, logs every sampled token, and fills the debug block
@@ -24,6 +26,7 @@
 #include <LowMem.h>
 #include <string.h>
 #include "engine.h"
+#include "speech.h"
 
 #define MAGIC 0x50584C21UL     /* 'PXL!' */
 #define TEMP_DEFAULT 205       /* 0.8 */
@@ -57,6 +60,7 @@ struct Dbg {
     long minFree;             /* 188: SE builds: lowest FreeMem seen while loading (bytes) */
     long kbTicks[4];          /* 192: PixelSE: ticks of the last keyboard draw and the last full redraw */
     short geo[16];            /* 208: PixelSE layout for test scripts: kbArea, kbButton, inputBox, area (t,l,b,r) */
+    Speech sp;                /* 240: speech (speech.h): state, on, ticks, rdTicks, count, beeps, err, tx, ph, ... */
 };
 static struct Dbg dbg;
 static int16_t tokLog[LOGMAX];
@@ -820,7 +824,7 @@ static void step(int t, int logits)
 }
 
 /* ------------------------------------------------------------------ menus: Apple, File */
-static MenuHandle appleM;
+static MenuHandle appleM, fileM;
 static int busyNow, abortReply;
 
 static void newChat(void)
@@ -879,7 +883,11 @@ static void doMenu(long mr)
         }
     } else if (menu == 129) {
         if (item == 1) { if (busyNow) abortReply = 1; else newChat(); }
-        else if (item == 2) ExitToShell();
+        else if (item == 2) {                   /* Speak Replies (enabled only with MacinTalk) */
+            dbg.sp.on = !dbg.sp.on;
+            CheckItem(fileM, 2, dbg.sp.on);
+            spPref(&dbg.sp, (int)dbg.sp.on);
+        } else if (item == 4) ExitToShell();
     }
 #ifdef PX_KB
     else if (menu == 130) kbToggle();
@@ -957,6 +965,7 @@ static void handleLine(const char *text, int n)
     busyNow = 1;
     for (i = 0; i < cnt && !abortReply; i++) step(ids[i], i == cnt - 1);
     newRow(RK_PIXEL);
+    dbg.sp.sentLen = 0;
     for (k = 0; !abortReply; k++) {
         int t;
         {
@@ -970,10 +979,12 @@ static void handleLine(const char *text, int n)
             char s[48];
             int m = px_tokstr(&M, t, s, 48);
             putText(s, m);                          /* a leading blank is dropped at the row start */
+            spTok(&dbg.sp, s, m);                   /* each sentence is spoken as soon as it ends */
         }
         if (k + 1 == maxNew) { step(t, 0); step(PX_END, 0); break; }
         step(t, 1);
     }
+    if (!abortReply) spTok(&dbg.sp, NULL, 0);      /* the end of a reply without . ! ? */
     busyNow = 0;
     if (abortReply) { abortReply = 0; dbg.state = 2; newChat(); }
     dbg.turns++;
@@ -1012,7 +1023,7 @@ int main(void)
     appleM = GetMenu(128);
     AppendResMenu(appleM, 'DRVR');              /* desk accessories, if the System has any */
     InsertMenu(appleM, 0);
-    InsertMenu(GetMenu(129), 0);
+    InsertMenu(fileM = GetMenu(129), 0);
 #ifdef PX_KB
     InsertMenu(GetMenu(130), 0);                /* Edit: Keyboard... (kb.r, PixelSE only) */
 #endif
@@ -1076,6 +1087,11 @@ int main(void)
         for (;;) SystemTask();
     }
     dbg.freeAfter = FreeMem();
+    if (spInit(&dbg.sp, bootVol, !bootEjected)) {      /* MacinTalk: after the model, so W4 keeps its memory */
+        EnableItem(fileM, 2);
+        dbg.sp.on = spPref(&dbg.sp, -1);
+        CheckItem(fileM, 2, dbg.sp.on);
+    }
 #ifdef PIXEL_SELFTEST
     dbg.selftest = 1;
     if (testMode) dbg.kself = kernelSelfTest();

@@ -46,6 +46,7 @@ THREE_VERSION = "0.186.1"
 THREE_FILES = ["build/three.module.js", "build/three.core.js", "examples/jsm/loaders/GLTFLoader.js",
                "examples/jsm/utils/BufferGeometryUtils.js", "examples/jsm/utils/SkeletonUtils.js",
                "examples/jsm/libs/meshopt_decoder.module.js", "examples/jsm/environments/RoomEnvironment.js",
+               "examples/jsm/lights/RectAreaLightUniformsLib.js", "examples/jsm/lights/RectAreaLightTexturesLib.js",
                "LICENSE"]
 MAX_FILE = 25 * 1024 * 1024
 

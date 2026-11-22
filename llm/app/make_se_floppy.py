@@ -4,9 +4,11 @@
   make_se_floppy.py --model m.pxm --app build/PixelSE.bin --out DIR [--layout pair|single]
                     [--raw] [--test "seed T k maxnew variant" "line" ...]
 
-pair (default): DIR/pixel_se_144_1.img ("Pixel 1": PixelSE, Pixel Model 1, Read Me) and
+pair (default): DIR/pixel_se_144_1.img ("Pixel 1": PixelSE, Pixel Model 1, MacinTalk, Read Me) and
 DIR/pixel_se_144_2.img ("Pixel 2": Pixel Model 2). single: DIR/pixel_se_144.img with everything
-(only if it fits). --raw stores the model uncompressed (loads faster; fine for the pair).
+(only if it fits). app: DIR/pixelse_app_144.img (PixelSE and MacinTalk). --raw stores the model
+uncompressed (loads faster; fine for the pair). MacinTalk (--macintalk; Apple software, never committed)
+sits next to PixelSE: Pixel finds it there or in the System Folder and reads its replies aloud.
 Prints each volume's free space (hvol) after copying. hfsutils runs with a private HOME.
 """
 import argparse
@@ -22,7 +24,9 @@ import export  # noqa: E402
 import make_disks as MD  # noqa: E402
 
 SIZE = 1474560
-README = "Copy everything from both Pixel disks into one folder on the hard disk, then double-click PixelSE.\r"
+README = ("Copy everything from both Pixel disks into one folder on the hard disk, then double-click PixelSE.\r\r"
+          "MacinTalk lets Pixel read its replies aloud (File > Speak Replies). It works in that folder or in "
+          "the System Folder.\r")
 
 
 def run(cmd, env):
@@ -56,6 +60,7 @@ def main():
     ap.add_argument("--layout", choices=("pair", "single", "app"), default="pair")
     ap.add_argument("--raw", action="store_true", help="uncompressed model (faster load)")
     ap.add_argument("--test", nargs="*")
+    ap.add_argument("--macintalk", default=MD.MACINTALK, help="MacinTalk (MacBinary); '' for none")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
     work = tempfile.mkdtemp(prefix="sefloppy_")
@@ -84,13 +89,18 @@ def main():
         MD.macbin(t, "Pixel Test", b"TEXT", "\r".join(a.test).encode("mac_roman") + b"\r")
         extra.append(t)
     print(f"model {len(model):,} bytes ({'raw' if a.raw else 'Huffman-coded'}), app {os.path.getsize(a.app):,}")
-    if a.layout == "app":           # just the app, to replace PixelSE on the SE's hard disk
-        build(os.path.join(a.out, "pixelse_app_144.img"), "PixelSE", [a.app], env)
+    mt = []
+    if a.macintalk and os.path.exists(a.macintalk):
+        mt = [a.macintalk]
+    elif a.macintalk:
+        print(f"MacinTalk not found ({a.macintalk}): no speech files on the floppies")
+    if a.layout == "app":           # just the app (and MacinTalk), to replace PixelSE on the SE's hard disk
+        build(os.path.join(a.out, "pixelse_app_144.img"), "PixelSE", [a.app] + mt, env)
     elif a.layout == "pair":
-        build(os.path.join(a.out, "pixel_se_144_1.img"), "Pixel 1", [a.app, parts[0], readme] + extra, env)
+        build(os.path.join(a.out, "pixel_se_144_1.img"), "Pixel 1", [a.app, parts[0]] + mt + [readme] + extra, env)
         build(os.path.join(a.out, "pixel_se_144_2.img"), "Pixel 2", [parts[1]], env)
     else:
-        build(os.path.join(a.out, "pixel_se_144.img"), "Pixel", [a.app] + parts + [readme] + extra, env)
+        build(os.path.join(a.out, "pixel_se_144.img"), "Pixel", [a.app] + parts + mt + [readme] + extra, env)
 
 
 if __name__ == "__main__":

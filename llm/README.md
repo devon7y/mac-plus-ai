@@ -111,6 +111,15 @@ The real-hardware numbers come from MAME slowed by 1.5× (Plus) and 1.3× (SE). 
 video and sound DMA that steals CPU cycles on the real machines; the factors were calibrated against
 it. On the website, Mini vMac runs at 4× and a reply takes about half a minute.
 
+**Pixel speaks** when the MacinTalk file (Apple's speech synthesizer from 1985, version 1.x; not in
+this repository) is in the System Folder or next to the app, as on the website. It reads each
+sentence aloud as soon as it has written it, in a voice a little higher than MacinTalk's default
+(File > Speak Replies turns it off). MacinTalk's programming interface was never in Inside Macintosh,
+so [`app/speech.c`](app/speech.c) calls its driver and its English-to-phoneme Reader directly.
+Numbers are spelled out first ("nineteen eighty six"), and a sentence that is only "Beep!" becomes a
+real beep. MacinTalk keeps the CPU busy while it talks, so each spoken sentence pauses the writing
+for about as long as it takes to say it.
+
 ## Bit-exact from Python to the 68000
 
 [`ref/`](ref/) is the normative definition of the integer arithmetic:
@@ -145,6 +154,9 @@ llm/app/build_all.sh llm/train/checkpoints/pixel_v2.pxm
 #    and pixel_se7.hd (SE hard disk under System 7)
 python3 llm/ref/chat.py llm/train/checkpoints/pixel_v2.pxm 4242 205 16 32 "hi pixel"   # the reference
 ```
+
+The SE images get MacinTalk from `toolchain/build/demo/extras/macintalk.bin` (MacBinary, Apple's;
+`--macintalk` on the disk builders) when it is there.
 
 `app/make_se_floppy.py` builds the two 1.44 MB floppies for a Macintosh SE. The SE version also has
 an on-screen keyboard for machines without one.

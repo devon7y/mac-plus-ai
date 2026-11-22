@@ -16,6 +16,7 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
+import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 
 // Browser key (KeyboardEvent.code) -> key node of the 128K's keyboard (Apple M0110: no arrows, Esc,
 // Control or keypad). The model names its key nodes by legend: bottom row Option.001, Start
@@ -59,6 +60,7 @@ const IMAGE_OF_GLASS = 0.905;   // the picture's width as a share of the glass's
 const ELEVATION = 0.2;          // rad: the front view looks down this much more than the screen's normal
 const FOV = 30;                 // degrees, vertical, of the whole viewport
 const HOLD_MS = 500, RETURN_MS = 1500;   // snap-back: hold where the user left it, then ease home
+const SCREEN_GLOW = 30;        // the screen's light on the case: area light luminance with every pixel lit
 
 // Quality levels. "auto" picks one from the GPU and steps down if frames are slow.
 export const QUALITY = {
@@ -107,16 +109,19 @@ void main() {
   vec2 range = 0.5 - 0.5 / max(scale * 1.6, vec2(1.0));
   vec2 f = clamp((cd - clamp(cd, -range, range)) * scale * 1.6 + 0.5, 0.0, 1.0);   // ~0.6 px edges: dark strokes stay dark
   float v = texture2D(map, (floor(texel) + f) / texSize).r;
-  // Phosphor glow: a blurred copy (a smaller mipmap level) of the screen added on top.
+  // Phosphor glow: a blurred copy (a smaller mipmap level) of the screen, brightening lit pixels
+  // only, so black pixels stay black (the screen's black corners, text) right up to the raster's edge.
   float g = texture2D(map, vUv, 3.0).r;
   // Scanlines, only once a Mac row is big enough on screen to show them without moire.
   float row = fract(texel.y) - 0.5;
   float k = scan * smoothstep(1.8, 3.2, scale.y);
   float s = mix(1.0, 0.6 + 0.4 * cos(6.2831853 * row), k);
-  // Edge falloff of the raster and a soft vignette.
+  // The raster's edge is sharp, as on a real Plus (anti-aliased over one screen pixel), with a faint
+  // vignette.
   vec2 c = vUv * 2.0 - 1.0;
-  float vig = 1.0 - 0.17 * dot(c * vec2(0.8, 1.0), c * vec2(0.8, 1.0));
-  vec2 e = smoothstep(vec2(0.0), vec2(0.013, 0.02), vUv) * smoothstep(vec2(0.0), vec2(0.013, 0.02), 1.0 - vUv);
+  float vig = 1.0 - 0.12 * dot(c * vec2(0.8, 1.0), c * vec2(0.8, 1.0));
+  vec2 aa = max(fwidth(vUv), vec2(1e-5));
+  vec2 e = clamp(vUv / aa, 0.0, 1.0) * clamp((1.0 - vUv) / aa, 0.0, 1.0);
   // Light emitted on top of the glass (the material blends additively): a black pixel is unlit
   // phosphor and adds nothing, so it looks exactly like the bare glass around the raster, with the
   // same shading and reflections. Faint flicker on the lit phosphor only.
@@ -131,7 +136,7 @@ void main() {
   float n = (hash(floor(texel) + fract(tt * 0.37)) - 0.5) * noise * fx;
   float gl = glow * (1.0 + fx * 0.15 * sin(6.2831853 * 0.23 * tt));
   if (afterAmt > 0.0) v = max(v, afterAmt * texture2D(after, (floor(texel) + f) / texSize).r);
-  vec3 col = tint * ((v * s + gl * g) * vig * e.x * e.y * flick * band * (1.0 + n));
+  vec3 col = tint * (v * (s + gl * g) * vig * e.x * e.y * flick * band * (1.0 + n));
   gl_FragColor = vec4(max(col, 0.0), 1.0);
   #include <colorspace_fragment>
 }`;
@@ -370,7 +375,7 @@ export async function createView3D(opts) {
     const r = Math.min(Math.min(hw, hh), Math.max(0, a + b + Math.sqrt(2 * a * b)));
     return { hw, hh, r };
   })();
-  const glassMat = new THREE.MeshStandardMaterial({ color: 0x2a2e2c, metalness: 0, roughness: 0.05, envMapIntensity: 1.0 });
+  const glassMat = new THREE.MeshStandardMaterial({ color: 0x303533, metalness: 0, roughness: 0.05, envMapIntensity: 1.5 });
   // The seam and the bezel's shadow on the glass: a thin dark line right at the opening's edge and a
   // soft darkening fading over a few millimetres inside it, stronger under the top edge (the light is
   // overhead), on everything the glass shows (its shading and its reflections).
@@ -443,6 +448,35 @@ export async function createView3D(opts) {
     glassMat.envMapRotation.setFromQuaternion(qEnv);
   }
 
+
+  // The screen's light on the case: the lit phosphor lights the bezel's recess (and, faintly, the desk
+  // and keyboard in front) in its blue-white, as on a real Plus in a dim room. An area light the size
+  // of the picture, in the glass's plane at its edges, facing out; its brightness follows how much of
+  // the Mac's screen is lit (sampled from the emulator's canvas a few times a second, smoothed). Faces
+  // behind that plane or facing the same way as the screen get none of it.
+  RectAreaLightUniformsLib.init();
+  const screenLight = new THREE.RectAreaLight(0xffffff, 0, imageW, imageH);
+  screenLight.color.setRGB(0.86, 0.92, 1.0);
+  screenLight.position.copy(glassCenter);
+  screenLight.lookAt(glassCenter.clone().add(normal));
+  scene.add(screenLight);
+  const lit = { canvas: document.createElement("canvas"), level: 0, target: 0, at: -1e9, due: false, timer: 0 };
+  lit.canvas.width = SCREEN_W; lit.canvas.height = SCREEN_H;
+  lit.ctx = lit.canvas.getContext("2d", { willReadFrequently: true });
+  function measureLit(now) {               // at most every 200 ms; a change in between is measured after it
+    if (!lit.due) return;
+    if (now - lit.at < 200) {
+      if (!lit.timer) lit.timer = setTimeout(() => { lit.timer = 0; request(); }, 210 - (now - lit.at));
+      return;
+    }
+    lit.due = false; lit.at = now;
+    try {
+      lit.ctx.drawImage(emuCanvas, 0, 0, SCREEN_W, SCREEN_H);
+      const d = lit.ctx.getImageData(0, 0, SCREEN_W, SCREEN_H).data;
+      let sum = 0; for (let i = 0; i < d.length; i += 4) sum += d[i];
+      lit.target = sum / (255 * SCREEN_W * SCREEN_H);
+    } catch { lit.target = 0; }
+  }
 
   picture.updateMatrixWorld(true);
   const picPos = picture.geometry.attributes.position;
@@ -995,7 +1029,12 @@ export async function createView3D(opts) {
     if (floppy.anim) { floppyStep(now); busy = true; }
     updateCamera();
     if (opts.onView) opts.onView(view.yaw, view.pitch, view.zoom);
-    if (texDirty) { tex.needsUpdate = true; texDirty = false; }
+    if (texDirty) { tex.needsUpdate = true; texDirty = false; lit.due = true; }
+    measureLit(now);
+    if (!started) lit.target = 0;
+    if (Math.abs(lit.target - lit.level) > 0.002) { lit.level += (lit.target - lit.level) * Math.min(1, dt / 120); busy = true; }
+    else lit.level = lit.target;
+    screenLight.intensity = SCREEN_GLOW * lit.level;
     crt.uniforms.time.value = (now / 1000) % 1000;
     const fxLevel = liveCrt();
     crt.uniforms.fx.value = fxLevel > 0 ? 1 : 0;
@@ -1220,7 +1259,9 @@ function glassStudio(lights) {
   const room = new THREE.SphereGeometry(45, 32, 16);
   const col = [];
   const p = room.attributes.position;
-  for (let i = 0; i < p.count; i++) { const y = p.getY(i) / 45; const v = 0.004 + 0.012 * Math.max(0, y); col.push(v, v, v * 1.05); }
+  // A lit room behind the viewer, brighter towards the ceiling: the curved glass shows it as a soft
+  // sheen, darker at the bottom (the desk), so the bare glass reads as glossy, not black.
+  for (let i = 0; i < p.count; i++) { const y = p.getY(i) / 45; const v = 0.0185 + 0.6 * Math.pow(Math.max(0, y), 1.6); col.push(v, v * 1.02, v * 1.06); }
   room.setAttribute("color", new THREE.Float32BufferAttribute(col, 3));
   s.add(new THREE.Mesh(room, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.BackSide })));
   // Each light: a direction, an angular width and height (degrees), corner radius (share of the

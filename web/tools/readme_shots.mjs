@@ -37,6 +37,28 @@ async function type(page, text) {
   }
 }
 const screen = (page) => page.evaluate(() => Array.from(document.getElementById("screen").getContext("2d").getImageData(0, 20, 512, 322).data.filter((_, i) => i % 4 === 0)));
+// Dark pixels in the input line at the bottom of the screen (Mac rows 300 and below, left of x = 470:
+// clear of the pointer parked at the right edge, whose shape changes when the app gets busy or idle).
+function inkInInput(g) {
+  let n = 0;
+  for (let y = 280; y < 322; y++) for (let x = 0; x < 470; x++) if (g[y * 512 + x] < 128) n++;
+  return n;
+}
+// Type a line and press Return; if the app didn't take it (the typed text is still in the input line:
+// Pixel ignores Return while it's still reading its last reply aloud), wait and press again.
+async function send(page, text) {
+  const empty = inkInInput(await screen(page));                                     // the input line before typing
+  await type(page, text);
+  for (let tries = 0; tries < 6; tries++) {
+    const before = await screen(page);
+    await tap(page, MAC["\n"]);
+    await sleep(1500);
+    const after = await screen(page);
+    if (inkInInput(after) - empty < (inkInInput(before) - empty) * 0.5) return;   // the typed text left the input line
+    console.log(`  Return not taken for "${text}", trying again`);
+    await sleep(2500);
+  }
+}
 // Wait at least minMs, then until the screen has (nearly: a blinking caret) stopped changing for quietMs.
 async function quiet(page, minMs, quietMs, maxMs) {
   const t0 = Date.now();
@@ -76,12 +98,12 @@ async function zoomShot(page, z, file) {
   if (cdp) { await cdp.send("Emulation.clearDeviceMetricsOverride"); await cdp.detach(); await sleep(1000); }
 }
 // Screen pixels that differ between two grabs (x >= x0, below the menu bar): their bounding box.
-async function changedBox(page, before, x0 = 0) {
+async function changedBox(page, before, x0 = 0, yMax = 342) {
   const after = await screen(page);
   let x1 = 1e9, y1 = 1e9, x2 = -1, y2 = -1;
   for (let i = 0; i < after.length; i++) if (after[i] !== before[i]) {
     const x = i % 512, y = 20 + Math.floor(i / 512);
-    if (x < x0) continue;
+    if (x < x0 || y > yMax) continue;
     x1 = Math.min(x1, x); y1 = Math.min(y1, y); x2 = Math.max(x2, x); y2 = Math.max(y2, y);
   }
   return x2 < 0 ? null : [x1, y1, x2, y2];
@@ -113,7 +135,7 @@ async function pageShots(page, name) {
   await sleep(1500); await settled(page);
 }
 
-const { browser, page } = await launch("chrome", { viewport: { width: 1600, height: 1000 } });
+const { browser, page } = await launch(process.env.BROWSER || "chrome", { viewport: { width: 1600, height: 1000 } });
 try {
   await boot(page);
   if (which === "framing") {
@@ -154,10 +176,10 @@ try {
     let before = await screen(page);
     await page.setInputFiles("#disk-file", process.env.PVZ_DISK, { timeout: 120000 });
     await sleep(9000);
-    const box = await changedBox(page, before, 300);
+    const box = await changedBox(page, before, 400, 170);   // a new disk's icon appears right under Macintosh HD's
     console.log("pvz: new disk icon", JSON.stringify(box));
     await macShot(page, path.join(out, "pvz_0_inserted.png"));
-    const [bx1, , bx2, by2] = box;               // the new disk's icon is the lowest change (under Macintosh HD)
+    const [bx1, , bx2, by2] = box;               // its icon above its name
     await macClick(page, Math.round((bx1 + bx2) / 2), by2 - 28); await sleep(500);
     await cmdKey(page, "o"); await sleep(3000);
     await cmdKey(page, "a"); await cmdKey(page, "o");
@@ -200,7 +222,7 @@ try {
     await park(page); await macShot(page, path.join(out, "pixel_0_awake.png"));
     const msgs = ["hi pixel", "what year is it?", "do you like floppy disks?", "tell me a joke"];
     for (let i = 0; i < msgs.length; i++) {
-      await type(page, msgs[i] + "\n");
+      await send(page, msgs[i]);
       const ms = await quiet(page, 8000, 5000, 90000);
       console.log(`pixel: "${msgs[i]}" answered after ${ms} ms`);
       await park(page); await macShot(page, path.join(out, `pixel_${i + 1}.png`));
@@ -210,7 +232,8 @@ try {
     await launchApp(page, "Dream");
     await quiet(page, 8000, 4000, 120000);
     await park(page); await macShot(page, path.join(out, "dream_0_loaded.png"));
-    const subjects = ["banana", "house", "lighthouse", "sailboat", "snowman", "owl", "teapot", "castle", "hot air balloon", "cactus", "umbrella", "pineapple", "guitar"];
+    const subjects = ["banana", "house", "lighthouse", "sailboat", "snowman", "owl", "teapot", "castle", "hot air balloon", "cactus", "umbrella", "pineapple", "guitar"]
+      .slice(0, Number(process.env.SUBJECTS || 13));                // SUBJECTS=1: just the banana (for the page shots)
     for (let i = 0; i < subjects.length; i++) {
       await type(page, "\b".repeat(18) + subjects[i] + "\n");
       if (i === 0) {

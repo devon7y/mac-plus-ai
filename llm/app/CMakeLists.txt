@@ -28,7 +28,7 @@ foreach(app Pixel PixelSE PixelTest)
         set(extra kernels68k_w4.s)
     endif()
     add_application(${app}
-        main.c engine.c tables.c pixel.r ${extra}
+        main.c engine.c tables.c speech.c pixel.r ${extra}
         TYPE APPL
         CREATOR Pxl1
     )

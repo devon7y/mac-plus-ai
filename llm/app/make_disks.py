@@ -8,6 +8,8 @@ Boot disk (DIR/pixel_boot.img): trimmed System 6, Narrow Screen, Pixel, "Pixel M
 the model as fits while leaving RESERVE bytes free) and, with --test, a "Pixel Test" script.
 Disk 2 (DIR/pixel_disk2.img, volume "Pixel Disk 2"): "Pixel Model 2", the rest.
 SE folder (DIR/se/): Pixel.bin plus both parts as MacBinary files (copy them into one folder).
+SE hard disk (DIR/pixel_se7.hd): System 7.0.1 with PixelSE in Startup Items, the model at the top level
+and MacinTalk (--macintalk, Apple software, never committed) in the System Folder, so Pixel speaks.
 Each part starts with a 16-byte header: 'PXPT', 0, part, u16 parts, u32 model id (body checksum),
 u32 offset of the part in the model file.
 """
@@ -28,6 +30,22 @@ RESERVE = 15360          # bytes left free on the boot disk (System 6 writes the
 SLACK2 = 4096            # bytes left free on disk 2 (manager's rule: at least 4 KB)
 DISK2_FREE = 803840      # an empty 800K HFS floppy
 CREATOR = b"Pxl1"
+MACINTALK = os.path.join(ROOT, "toolchain", "build", "demo", "extras", "macintalk.bin")   # MacinTalk 1.31
+
+
+def add_macintalk(img, folder, env, path=MACINTALK, part="1"):
+    """Copy MacinTalk (MacBinary) into folder (e.g. ':System Folder:') of an HFS image, unless it is there."""
+    if not os.path.exists(path):
+        print(f"MacinTalk not found ({path}): {img} stays silent")
+        return False
+    run(["hmount", img, part] if part else ["hmount", img], env)
+    try:
+        if "MacinTalk" not in run(["hls", folder], env).split():
+            run(["hcopy", "-m", path, folder + "MacinTalk"], env)
+        print(f"{img}: MacinTalk in '{folder}'")
+    finally:
+        subprocess.run(["humount"], env=env, capture_output=True)
+    return True
 
 
 def macbin(path, name, ftype, data):
@@ -71,6 +89,7 @@ def main():
     ap.add_argument("--slack2", type=int, default=SLACK2, help="bytes to leave free on disk 2")
     ap.add_argument("--tokenizer", help="tokenizer.json (llm/train/tokenizer.py) to embed if the model has none")
     ap.add_argument("--no-narrow", action="store_true", help="boot disk without Narrow Screen (test disks: 512 px)")
+    ap.add_argument("--macintalk", default=MACINTALK, help="MacinTalk (MacBinary) for the SE hard disk's System Folder")
     a = ap.parse_args()
     model = open(a.model, "rb").read()
     assert model[:4] == b"PIXL"
@@ -150,6 +169,8 @@ def main():
         r = subprocess.run([sys.executable, "-I", os.path.join(ROOT, "toolchain", "se7", "build_se_disk.py"),
                             "--app", se_app, "--out", hd, "--extra"] + se_extra, capture_output=True, text=True)
         print(f"SE hard disk: {hd}" if r.returncode == 0 else f"SE hard disk not built: {r.stderr.strip()[-200:]}")
+        if r.returncode == 0:
+            add_macintalk(hd, ":System Folder:", env, a.macintalk)
         print(f"model {len(model):,} bytes: part 1 {n1:,} (boot disk, {left:,} bytes left free), "
               f"part 2 {len(model) - n1:,} (disk 2, {free2:,} bytes left free); app {os.path.getsize(a.app):,}")
         if left < RESERVE:
